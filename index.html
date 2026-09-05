@@ -1,0 +1,2837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Royal Restaurant – Ore Chakand, Gaya, Bihar</title>
+
+<!-- Google Fonts (works when online; graceful fallback when offline) -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+<style>
+/* ── VARIABLES ─────────────────────────────────────────── */
+:root{
+  --gold:#C9A84C;--gold-lt:#E8C97A;--gold-dk:#A07830;
+  --champ:#F5E6C8;--dark:#0D0800;--dbrown:#160B00;
+  --glass:rgba(16,8,0,.62);--gborder:rgba(201,168,76,.32);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --display:'Cinzel','Times New Roman',serif;
+  --body:'Raleway','Segoe UI',sans-serif;
+  --ease:all .28s cubic-bezier(.25,.46,.45,.94);
+}
+
+/* ── RESET ─────────────────────────────────────────────── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--champ);font-family:var(--body);overflow-x:hidden}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--dark)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+::selection{background:var(--gold);color:var(--dark)}
+a{text-decoration:none}
+
+/* ── CROWN ANIMATION 200-300ms ─────────────────────────── */
+@keyframes crownPulse{
+  0%,100%{transform:scale(1) rotate(0deg);color:var(--gold)}
+  50%    {transform:scale(1.22) rotate(4deg);color:var(--gold-lt)}
+}
+.crown{display:inline-block;animation:crownPulse 2.4s ease-in-out infinite;font-size:.9em;margin:0 5px}
+
+/* ── SUBTITLE PILL ─────────────────────────────────────── */
+.pill{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(201,168,76,.1);border:1px solid var(--gborder);
+  border-radius:50px;padding:5px 18px;font-family:var(--body);
+  font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold-lt);backdrop-filter:blur(8px);margin-bottom:14px;
+  animation:pillIn 250ms ease both;
+}
+@keyframes pillIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── GOLD DIVIDER ──────────────────────────────────────── */
+.divider{display:flex;align-items:center;gap:14px;justify-content:center;margin:22px auto}
+.divider::before,.divider::after{content:'';flex:1;max-width:110px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent)}
+.divider .gem{width:8px;height:8px;background:var(--gold);transform:rotate(45deg);flex-shrink:0}
+
+/* ── BUTTONS ───────────────────────────────────────────── */
+.btn-gold{
+  display:inline-flex;align-items:center;gap:9px;
+  background:linear-gradient(135deg,var(--gold-dk),var(--gold));
+  color:var(--dark);font-family:var(--body);font-size:.7rem;
+  letter-spacing:.18em;text-transform:uppercase;font-weight:600;
+  padding:15px 34px;border:none;border-radius:3px;cursor:pointer;
+  transition:var(--ease);box-shadow:0 4px 22px rgba(201,168,76,.28);
+}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(201,168,76,.48)}
+
+.btn-glass{
+  display:inline-flex;align-items:center;gap:12px;
+  background:var(--glass);backdrop-filter:blur(16px);
+  border:1px solid var(--gborder);color:var(--champ);
+  font-family:var(--body);font-size:.7rem;letter-spacing:.18em;
+  text-transform:uppercase;padding:15px 34px;border-radius:3px;cursor:pointer;transition:var(--ease);
+}
+.btn-glass:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.arrow-ring{width:22px;height:22px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform 250ms ease;flex-shrink:0}
+.arrow-ico{font-size:.6rem;color:var(--gold);transition:transform 250ms ease}
+.btn-glass:hover .arrow-ring{transform:rotate(45deg)}
+.btn-glass:hover .arrow-ico{transform:translateX(3px)}
+
+/* ── LOADING SCREEN ────────────────────────────────────── */
+#loader{
+  position:fixed;inset:0;z-index:9999;background:var(--dark);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  transition:opacity .7s ease;
+}
+#loader.gone{opacity:0;pointer-events:none}
+.ld-logo{font-family:var(--display);font-size:2.2rem;color:var(--gold);letter-spacing:.25em;animation:ldPulse 1.4s ease infinite}
+@keyframes ldPulse{0%,100%{opacity:1}50%{opacity:.35}}
+.ld-bar{width:180px;height:2px;background:rgba(201,168,76,.18);border-radius:2px;overflow:hidden}
+.ld-fill{height:100%;background:linear-gradient(to right,var(--gold-dk),var(--gold));animation:ldFill 1.5s ease forwards}
+@keyframes ldFill{from{width:0}to{width:100%}}
+
+/* ── NAVBAR ────────────────────────────────────────────── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:18px 60px;display:flex;align-items:center;justify-content:space-between;transition:var(--ease);
+}
+#nav.scrolled{background:rgba(10,5,0,.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--gborder);padding:11px 60px}
+.logo{display:flex;align-items:center;gap:11px}
+.logo-circle{
+  width:50px;height:50px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold-dk),var(--gold),var(--gold-lt));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:1.35rem;font-weight:700;color:var(--dark);
+  box-shadow:0 0 18px rgba(201,168,76,.35);border:2px solid rgba(255,255,255,.12);flex-shrink:0;
+}
+.logo-text .n{font-family:var(--display);font-size:1.05rem;font-weight:700;color:var(--gold);letter-spacing:.14em;line-height:1}
+.logo-text .s{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(245,230,200,.6);margin-top:3px}
+.nav-ul{list-style:none;display:flex;align-items:center;gap:32px}
+.nav-ul a{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,230,200,.8);transition:var(--ease);position:relative}
+.nav-ul a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:.3s}
+.nav-ul a:hover{color:var(--gold)}
+.nav-ul a:hover::after{width:100%}
+.nav-book{border:1px solid var(--gold)!important;padding:8px 20px!important;border-radius:3px!important;color:var(--gold)!important}
+.nav-book:hover{background:var(--gold)!important;color:var(--dark)!important}
+.nav-book::after{display:none!important}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.ham span{display:block;width:24px;height:1.5px;background:var(--gold)}
+
+/* ── FLOATING CTA ──────────────────────────────────────── */
+.float-cta{position:fixed;left:22px;bottom:38%;z-index:800;writing-mode:vertical-rl;transform:rotate(180deg)}
+.float-cta a{
+  display:flex;align-items:center;gap:11px;
+  background:linear-gradient(to top,var(--gold-dk),var(--gold));
+  color:var(--dark);font-family:var(--body);font-size:.58rem;letter-spacing:.28em;
+  text-transform:uppercase;font-weight:600;padding:16px 9px;border-radius:50px;
+  box-shadow:0 4px 18px rgba(201,168,76,.38),0 0 0 5px rgba(201,168,76,.08);transition:var(--ease);
+}
+.float-cta a:hover{box-shadow:0 8px 28px rgba(201,168,76,.58),0 0 0 9px rgba(201,168,76,.1);transform:translateX(-3px)}
+.float-ico{writing-mode:horizontal-tb;transform:rotate(90deg);font-size:.95rem}
+
+/* ── MOBILE NAV ────────────────────────────────────────── */
+#mob-nav{display:none;position:fixed;inset:0;background:rgba(10,5,0,.97);z-index:950;flex-direction:column;align-items:center;justify-content:center;gap:26px}
+#mob-nav.open{display:flex}
+#mob-nav a{font-family:var(--display);font-size:1.5rem;color:var(--champ);transition:color .25s}
+#mob-nav a:hover{color:var(--gold)}
+#mob-close{position:absolute;top:28px;right:28px;background:none;border:none;color:var(--gold);font-size:1.4rem;cursor:pointer}
+
+/* ── HERO SECTION ──────────────────────────────────────── */
+#hero{position:relative;height:100vh;min-height:680px;overflow:hidden;display:flex}
+
+/* Animated gradient BG — lightweight GPU opacity */
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 120% 80% at 60% 30%,rgba(90,50,10,.55) 0%,transparent 55%),
+    radial-gradient(ellipse 80% 60% at 20% 80%,rgba(60,30,5,.4) 0%,transparent 50%),
+    linear-gradient(160deg,#1a0900 0%,#0d0400 40%,#1a0600 70%,#0a0300 100%);
+  animation:bgShimmer 8s ease-in-out infinite alternate;
+  will-change:opacity;
+}
+@keyframes bgShimmer{0%{opacity:.92}100%{opacity:1}}
+
+/* Candle flicker — optimized opacity */
+.candle-ov{
+  position:absolute;inset:0;z-index:1;
+  background:radial-gradient(ellipse 60% 70% at 65% 50%,rgba(201,120,30,.07) 0%,transparent 60%);
+  animation:candleFlicker 3.5s ease-in-out infinite alternate;
+  will-change:opacity;
+}
+@keyframes candleFlicker{
+  0%  {opacity:.55}
+  50% {opacity:.85}
+  100%{opacity:.65}
+}
+
+/* Online image layer */
+.hero-food-img{
+  position:absolute;inset:0;z-index:0;
+  background-image:url('https://images.unsplash.com/photo-1514190051997-0f6f39ca5cde?w=1600&q=75');
+  background-size:cover;background-position:center;
+  filter:brightness(.22) sepia(.35) saturate(.8);
+  transform:scale(1.04);
+}
+@keyframes heroPan{from{transform:scale(1.04) translate(0,0)}to{transform:scale(1.08) translate(-1%,-1%)}}
+
+/* Vignette */
+.hero-vignette{
+  position:absolute;inset:0;z-index:2;
+  background:
+    linear-gradient(to right,rgba(10,5,0,.85) 0%,transparent 45%,transparent 55%,rgba(10,5,0,.5) 100%),
+    linear-gradient(to bottom,rgba(10,5,0,.35) 0%,transparent 35%,rgba(10,5,0,.75) 100%);
+}
+
+/* Split */
+.hero-split{position:relative;z-index:3;display:flex;width:100%;height:100%}
+
+/* Left panel */
+.hero-left{flex:1;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:60px 44px}
+.hl-img{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&q=80');
+  background-size:cover;background-position:center;
+  filter:brightness(.38) sepia(.25);transition:transform 9s ease;
+}
+#hero:hover .hl-img{transform:scale(1.06)}
+.hl-content{position:relative;z-index:2}
+.hl-label{font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.hl-label::before{content:'';width:26px;height:1px;background:var(--gold)}
+.hl-title{font-family:var(--serif);font-size:2.6rem;font-weight:300;font-style:italic;color:var(--champ);line-height:1.1;text-shadow:0 2px 18px rgba(0,0,0,.85)}
+.hl-title strong{font-weight:600;color:var(--gold-lt);font-style:normal}
+
+/* Center divider */
+.hero-divider{width:1px;flex-shrink:0;background:linear-gradient(to bottom,transparent,var(--gold) 40%,var(--gold) 60%,transparent);display:flex;align-items:center;justify-content:center}
+.hd-gem{width:11px;height:11px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 12px var(--gold)}
+
+/* Right panel */
+.hero-right{flex:1.2;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 55px 80px;position:relative}
+.hero-tiny{position:absolute;font-size:.55rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);opacity:.55;font-family:var(--body)}
+.hero-tiny.tr{top:95px;right:55px;writing-mode:vertical-rl}
+.hero-tiny.br{bottom:115px;right:55px;writing-mode:vertical-rl;transform:rotate(180deg)}
+.hero-content{text-align:center;max-width:520px}
+.hero-eye{font-size:.64rem;letter-spacing:.38em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.hero-h1{font-family:var(--display);font-size:clamp(2rem,5vw,3.9rem);font-weight:400;color:var(--champ);line-height:1.04;margin-bottom:10px;text-shadow:0 4px 28px rgba(0,0,0,.7)}
+.hero-h1 .gw{color:var(--gold)}
+.hero-sub{font-family:var(--serif);font-size:1.3rem;font-style:italic;color:rgba(245,230,200,.82);margin-bottom:6px}
+.hero-world{font-family:var(--display);font-size:clamp(.95rem,2.4vw,1.52rem);letter-spacing:.1em;color:var(--gold-lt);margin-bottom:38px}
+.hero-ctas{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+
+/* Scroll hint */
+.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:4;text-align:center}
+.scroll-hint span{display:block;font-size:.56rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);opacity:.65;margin-bottom:8px}
+.scroll-line{width:1px;height:42px;background:linear-gradient(to bottom,var(--gold),transparent);margin:0 auto;animation:scrollAnim 2s ease-in-out infinite}
+@keyframes scrollAnim{0%,100%{opacity:.7;transform:scaleY(1)}50%{opacity:.25;transform:scaleY(.55)}}
+
+/* ── SECTIONS ──────────────────────────────────────────── */
+.sec{padding:110px 0}
+.sec-header{text-align:center;margin-bottom:64px}
+.sec-header h2{font-family:var(--display);font-size:clamp(1.9rem,4vw,3rem);font-weight:400;color:var(--champ);margin-bottom:14px}
+.sec-header p{font-family:var(--serif);font-size:1.08rem;font-style:italic;color:rgba(245,230,200,.65);max-width:460px;margin:0 auto}
+.wrap{max-width:1200px;margin:0 auto;padding:0 56px}
+
+/* ── ABOUT ─────────────────────────────────────────────── */
+#about{
+  position:relative;
+  background:
+    linear-gradient(to bottom,rgba(13,8,0,.97) 0%,rgba(22,12,0,.9) 50%,rgba(13,8,0,.97) 100%),
+    url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1400&q=65') center/cover fixed;
+}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:75px;align-items:center}
+.about-img-wrap{position:relative}
+.about-photo{
+  width:100%;aspect-ratio:4/5;
+  background:
+    linear-gradient(160deg,rgba(120,70,10,.35) 0%,rgba(10,5,0,.85) 100%),
+    url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=75') center/cover;
+  border-radius:2px;
+}
+.about-border{position:absolute;inset:-13px;border:1px solid var(--gborder);border-radius:4px;pointer-events:none}
+.corner{position:absolute;width:28px;height:28px;border-color:var(--gold);border-style:solid}
+.c-tl{top:-13px;left:-13px;border-width:2px 0 0 2px}.c-tr{top:-13px;right:-13px;border-width:2px 2px 0 0}
+.c-bl{bottom:-13px;left:-13px;border-width:0 0 2px 2px}.c-br{bottom:-13px;right:-13px;border-width:0 2px 2px 0}
+.about-badge{
+  position:absolute;bottom:22px;right:-22px;width:96px;height:96px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold-dk),var(--gold));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  box-shadow:0 4px 18px rgba(201,168,76,.38);
+}
+.about-badge .yr{font-family:var(--display);font-size:1.4rem;font-weight:700;color:var(--dark);line-height:1}
+.about-badge .es{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dark);opacity:.72}
+.about-text h2{font-family:var(--display);font-size:clamp(1.7rem,3.5vw,2.6rem);font-weight:400;color:var(--champ);line-height:1.2;margin-bottom:18px}
+.about-text p{font-family:var(--serif);font-size:1.02rem;line-height:1.9;color:rgba(245,230,200,.78);margin-bottom:18px}
+.stats{display:flex;gap:36px;margin-top:36px;padding-top:36px;border-top:1px solid var(--gborder)}
+.stat .n{font-family:var(--display);font-size:2rem;font-weight:600;color:var(--gold);line-height:1}
+.stat .l{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,230,200,.55);margin-top:5px}
+
+/* ── MENU (3D ELEVATED ROYAL FARMAAN SCROLL) ──────────────── */
+#menu{
+  min-height:330vh;position:relative;
+  background:
+    radial-gradient(ellipse at 50% 25%, rgba(160,30,50,.35) 0%, transparent 65%),
+    radial-gradient(ellipse at 80% 85%, rgba(184,40,62,.18) 0%, transparent 55%),
+    linear-gradient(175deg,#140205 0%,#0A0103 45%,#1A0408 80%,#080102 100%);
+  overflow:visible;
+}
+#menu::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 45%, rgba(245,200,105,.07) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+/* Floating ambient food emojis */
+.menu-floating-foods{
+  position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden;
+}
+.float-food{
+  position:absolute;font-size:2rem;opacity:.12;
+  will-change:transform;
+  animation:floatCheesyFood 10s ease-in-out infinite alternate;
+}
+@keyframes floatCheesyFood{
+  0%  {transform:translateY(0) rotate(0deg) scale(1)}
+  50% {transform:translateY(-26px) rotate(16deg) scale(1.15)}
+  100%{transform:translateY(16px) rotate(-14deg) scale(0.92)}
+}
+
+/* Sticky Container that pins the 3D scroll in viewport */
+.farmaan-sticky-wrap{
+  position:sticky;top:55px;height:calc(100vh - 55px);min-height:640px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:10;padding:0 24px 18px;
+  contain:layout style;
+}
+
+/* Header Section above Scroll */
+.farmaan-header{
+  text-align:center;margin-bottom:12px;flex-shrink:0;z-index:5;
+}
+.farmaan-header h2{
+  font-family:var(--display);font-size:clamp(1.6rem,3vw,2.3rem);font-weight:600;
+  color:#FFF4D4;margin-bottom:3px;letter-spacing:.09em;
+  text-shadow:0 2px 12px rgba(0,0,0,.9), 0 0 20px rgba(245,200,105,.25);
+}
+.farmaan-subtitle{
+  font-family:var(--serif);font-size:.92rem;font-style:italic;color:#E8C97A;
+}
+
+/* Chapter Progress Tabs (१. स्टार्टर | २. थाली | ३. पेय) */
+.farmaan-nav-pills{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:7px;flex-wrap:wrap;
+}
+.farmaan-pill{
+  padding:5px 15px;border-radius:30px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(245,200,105,.35);
+  color:#F5E2B3;font-family:var(--body);font-size:.66rem;letter-spacing:.12em;
+  text-transform:uppercase;cursor:pointer;transition:all .22s ease;
+  display:flex;align-items:center;gap:6px;
+}
+.farmaan-pill:hover{
+  background:rgba(201,168,76,.22);border-color:#F5C869;color:#FFF;
+}
+.farmaan-pill.active{
+  background:linear-gradient(135deg,#851D2C,#B8283E);border-color:#F5C869;
+  color:#FFF7E6;font-weight:700;box-shadow:0 0 16px rgba(245,200,105,.4);
+}
+.farmaan-roll-toggle{
+  margin-left:8px;background:rgba(133,29,44,.3);border-color:#E8C97A;
+}
+
+/* 3D Elevated Stage */
+.farmaan-stage{
+  position:relative;width:100%;max-width:1060px;height:510px;
+  perspective:1800px;margin:0 auto;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* 3D Ground Shadow creating high elevation from dark table */
+.farmaan-ground-shadow{
+  position:absolute;bottom:-28px;left:4%;width:92%;height:46px;
+  background:radial-gradient(ellipse,rgba(0,0,0,.92) 0%,rgba(133,29,44,.3) 40%,transparent 72%);
+  filter:blur(18px);border-radius:50%;pointer-events:none;z-index:0;
+}
+
+/* THE SCROLL BOX */
+.farmaan-scroll-box{
+  position:relative;width:100%;max-width:980px;height:100%;
+  display:flex;flex-direction:column;align-items:center;
+  transform-origin:top center;
+  transition:all .42s cubic-bezier(.2,.9,.25,1.15);
+  will-change:transform;
+}
+
+/* Dynamic Royal Pendulum Swing Physics ("झूला" animation on unroll) */
+.farmaan-scroll-box.unrolling-swing{
+  animation:royalScrollSwing 0.85s cubic-bezier(.25,1,.5,1) forwards;
+}
+@keyframes royalScrollSwing{
+  0%   {transform:rotateX(14deg) translateY(-16px) scale(.97)}
+  28%  {transform:rotateX(-5.5deg) translateY(6px) scale(1.01) rotate(1.2deg)}
+  54%  {transform:rotateX(2.8deg) translateY(-2.5px) scale(.995) rotate(-0.8deg)}
+  78%  {transform:rotateX(-1.2deg) translateY(1px) rotate(0.4deg)}
+  100% {transform:rotateX(0deg) translateY(0) scale(1) rotate(0deg)}
+}
+
+/* ══════════ 3D BRASS ROLLERS (TOP & BOTTOM) ══════════ */
+.farmaan-roller{
+  position:relative;width:100%;height:38px;z-index:20;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.top-roller{
+  margin-bottom:-6px;
+}
+.bottom-roller{
+  margin-top:-6px;
+  transition:transform .42s cubic-bezier(.2,.9,.25,1.15);
+  will-change:transform;
+}
+
+/* Central Cylindrical Roller Bar with Specular Lighting */
+.roller-cylinder{
+  flex:1;height:24px;border-radius:4px;position:relative;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(255,248,220,.8) 0%, transparent 50%),
+    linear-gradient(to bottom, #8C6219 0%, #E8C872 20%, #FFF5D2 38%, #B88B2A 62%, #52370A 85%, #8C6219 100%);
+  box-shadow:inset 0 2px 4px rgba(255,255,255,.6), inset 0 -2px 5px rgba(0,0,0,.8), 0 4px 12px rgba(0,0,0,.6);
+  border-top:1px solid #FFF8DC;border-bottom:1px solid #3B2605;
+  overflow:hidden;
+}
+/* Shimmer band */
+.roller-shimmer{
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.3) 45%,rgba(255,255,255,.7) 50%,rgba(255,255,255,.3) 55%,transparent 100%);
+  animation:rollerSheen 4.5s infinite ease-in-out;
+}
+@keyframes rollerSheen{
+  0%  {transform:translateX(-100%)}
+  40% {transform:translateX(100%)}
+  100%{transform:translateX(100%)}
+}
+.roller-filigree-band{
+  position:absolute;inset:2px 0;
+  background-image:radial-gradient(circle at 10px 50%, rgba(94,62,12,.4) 2px, transparent 3px);
+  background-size:16px 100%;opacity:.45;
+}
+
+/* Turned Brass Finial Knobs (left & right) */
+.roller-finial{
+  width:64px;height:38px;flex-shrink:0;
+  display:flex;align-items:center;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.7));
+}
+.left-finial{justify-content:flex-end;margin-right:-2px}
+.right-finial{justify-content:flex-start;margin-left:-2px}
+.finial-svg{width:60px;height:34px;display:block}
+
+/* ══════════ THE UNROLLED PARCHMENT SHEET ══════════ */
+.farmaan-parchment-sheet{
+  position:relative;width:calc(100% - 70px);height:434px;
+  background:
+    radial-gradient(ellipse at 50% 50%, #FFFDF8 0%, #FAF1DE 55%, #F0DEBE 82%, #DFC8A2 100%);
+  border-left:2px solid #C49F56;border-right:2px solid #C49F56;
+  box-shadow:
+    inset 0 16px 24px rgba(110,60,20,.18),
+    inset 0 -16px 24px rgba(110,60,20,.18),
+    inset 16px 0 24px rgba(110,60,20,.1),
+    inset -16px 0 24px rgba(110,60,20,.1),
+    0 12px 30px rgba(0,0,0,.5);
+  overflow:hidden;position:relative;
+  transform-origin:top center;will-change:height,opacity;
+  transition:height .42s cubic-bezier(.2,.9,.25,1.15), opacity .25s ease;
+}
+
+/* Ornate Floral Vine Borders (Left & Right - identical to user reference image) */
+.parchment-floral-border{
+  position:absolute;top:0;bottom:0;width:55px;z-index:4;
+  pointer-events:none;opacity:.9;
+}
+.parchment-floral-border.left-border{left:4px}
+.parchment-floral-border.right-border{right:4px}
+.floral-vine-svg{width:100%;height:100%}
+
+/* Parchment Fine Gold Inner Frame */
+.farmaan-parchment-sheet::before{
+  content:'';position:absolute;inset:8px 52px;
+  border:1px solid rgba(184,139,52,.4);border-radius:6px;
+  pointer-events:none;z-index:3;
+}
+.farmaan-parchment-sheet::after{
+  content:'';position:absolute;inset:12px 56px;
+  border:1px dashed rgba(184,139,52,.3);border-radius:4px;
+  pointer-events:none;z-index:3;
+}
+
+/* Central Content Container Inside Parchment */
+.farmaan-content-area{
+  position:absolute;inset:10px 54px;z-index:5;
+  display:flex;overflow:hidden;
+}
+
+/* ══════════ CHAPTER PANELS (3 PAGES) ══════════ */
+.farmaan-chapter{
+  position:absolute;inset:0;display:flex;gap:18px;
+  opacity:0;pointer-events:none;
+  transform:scale(.97) translateY(12px);
+  transition:opacity .42s ease, transform .45s cubic-bezier(.25,1,.3,1);
+  overflow-y:auto;overflow-x:hidden;padding:10px 14px;
+  scrollbar-width:thin;scrollbar-color:var(--gold) transparent;
+}
+.farmaan-chapter.active{
+  opacity:1;pointer-events:auto;
+  transform:scale(1) translateY(0);
+}
+.farmaan-chapter::-webkit-scrollbar{width:4px}
+.farmaan-chapter::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+
+/* Two Columns inside each Chapter */
+.farmaan-col{
+  flex:1;min-width:0;display:flex;flex-direction:column;
+}
+
+/* Column Subheader on Parchment */
+.farmaan-col-head{
+  text-align:center;margin-bottom:8px;position:relative;
+}
+.farmaan-kicker{
+  font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:#851D2C;font-weight:700;
+}
+.farmaan-col-title{
+  font-family:var(--serif);font-size:1.08rem;font-weight:700;color:#28060B;line-height:1.2;
+}
+.farmaan-gold-sep{
+  width:50%;height:1px;margin:3px auto 0;
+  background:linear-gradient(to right,transparent,#C29438,transparent);
+}
+
+/* ══════════ HERO DISH SHOWCASE ON FARMAAN ══════════ */
+.farmaan-hero-card{
+  background:linear-gradient(135deg,#FFFDF9 0%,#FAF2DF 100%);
+  border:1.2px solid rgba(194,148,56,.45);border-radius:8px;
+  padding:8px 10px;margin-bottom:8px;display:flex;align-items:center;gap:10px;
+  box-shadow:0 3px 12px rgba(110,60,20,.1);position:relative;
+  cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);
+}
+.farmaan-hero-card:hover{
+  border-color:#851D2C;transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(133,29,44,.18);
+  background:#FFFFFF;
+}
+.f-hero-img-box{
+  position:relative;width:66px;height:66px;flex-shrink:0;border-radius:50%;
+  padding:2px;background:linear-gradient(135deg,#D4AF37,#851D2C);
+  box-shadow:0 3px 10px rgba(0,0,0,.22);
+}
+.f-hero-img-box img{
+  width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;
+}
+.f-hero-steam{
+  position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+  font-size:.9rem;animation:steamRiseAnim 2s infinite ease-in-out;
+}
+.f-hero-info{flex:1;min-width:0}
+.f-hero-badge{
+  font-size:.48rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  padding:2px 7px;border-radius:20px;
+}
+.f-hero-name{
+  font-family:var(--serif);font-size:.92rem;font-weight:700;color:#2A060C;
+  margin-top:1px;line-height:1.2;
+}
+.f-hero-desc{
+  font-size:.62rem;color:#69222E;font-style:italic;line-height:1.3;
+  margin-top:1px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.f-hero-price{
+  font-family:var(--display);font-size:.92rem;font-weight:700;color:#851D2C;
+}
+
+/* ══════════ CLEAN DISH ROW CARD ON PARCHMENT ══════════ */
+.farmaan-dish-card{
+  display:flex;align-items:center;gap:9px;padding:6px 9px;
+  background:rgba(255,252,246,.85);border:1px solid rgba(194,148,56,.28);
+  border-radius:6px;margin-bottom:6px;cursor:pointer;position:relative;
+  transition:all .2s cubic-bezier(.34,1.56,.64,1);
+}
+.farmaan-dish-card:hover{
+  background:#FFFFFF;border-color:#851D2C;
+  transform:translateX(3px);box-shadow:0 3px 10px rgba(133,29,44,.15);
+}
+.f-dish-thumb{
+  width:36px;height:36px;border-radius:6px;overflow:hidden;flex-shrink:0;
+  border:1px solid rgba(194,148,56,.35);background:#FAF0DA;position:relative;
+  display:flex;align-items:center;justify-content:center;font-size:1.15rem;
+}
+.f-dish-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.f-dish-info{flex:1;min-width:0}
+.f-dish-name{
+  font-family:var(--serif);font-size:.85rem;font-weight:700;color:#28060B;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.f-dish-desc{
+  font-size:.62rem;color:#6E2B38;line-height:1.25;margin-top:1px;
+  font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.f-dish-price{
+  font-family:var(--display);font-size:.86rem;font-weight:700;color:#851D2C;
+  flex-shrink:0;margin-left:4px;
+}
+
+/* Corner Action Button on Bottom of Column */
+.farmaan-col-btn{
+  margin-top:auto;padding:5px 12px;border-radius:20px;
+  background:linear-gradient(135deg,#851D2C,#540D17);
+  border:1px solid var(--gold);color:#FFF6E6;
+  font-family:var(--body);font-size:.58rem;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:600;cursor:pointer;
+  transition:all .2s ease;align-self:center;margin-top:4px;
+}
+.farmaan-col-btn:hover{
+  background:var(--gold);color:#260408;transform:translateY(-1px);
+}
+.farmaan-col-btn.prev-style{
+  background:rgba(255,255,255,.9);color:#851D2C;border-color:rgba(133,29,44,.4);
+}
+.farmaan-col-btn.prev-style:hover{
+  background:#851D2C;color:#FFF;
+}
+
+/* ══════════ ROLLED / CLOSED STATE OVERLAY ══════════ */
+.farmaan-rolled-overlay{
+  position:absolute;inset:0;z-index:35;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transform:scale(.92);
+  transition:opacity .25s ease, transform .35s cubic-bezier(.2,.9,.25,1.15);
+}
+/* When .is-rolled is applied */
+.farmaan-scroll-box.is-rolled .farmaan-parchment-sheet{
+  height:0 !important;opacity:0 !important;border-width:0 !important;padding:0 !important;
+}
+.farmaan-scroll-box.is-rolled .farmaan-rolled-overlay{
+  opacity:1;pointer-events:auto;transform:scale(1);
+}
+.farmaan-scroll-box.is-rolled .bottom-roller{
+  transform:translateY(-8px) !important;
+}
+
+/* Silk Sash wrapping the rolled Farmaan */
+.farmaan-seal-sash{
+  width:320px;padding:20px 24px;border-radius:14px;
+  background:
+    radial-gradient(circle at 50% 25%, rgba(245,200,105,.35) 0%, transparent 60%),
+    linear-gradient(145deg,#2D040A 0%,#66101F 30%,#941D2E 50%,#540D17 76%,#240307 100%);
+  border:2px solid #F5C869;
+  box-shadow:0 12px 40px rgba(0,0,0,.9), 0 0 25px rgba(245,200,105,.35);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;cursor:pointer;
+  animation:sashPulse 2.8s ease-in-out infinite alternate;
+  will-change:transform;
+}
+@keyframes sashPulse{
+  0%  {transform:scale(1)}
+  100%{transform:scale(1.025)}
+}
+.farmaan-wax-seal{
+  width:72px;height:72px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#C92A3E 0%,#8A1220 55%,#540812 100%);
+  border:3px solid #D4AF37;box-shadow:0 4px 16px rgba(0,0,0,.8), 0 0 16px rgba(212,175,55,.6);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  margin-bottom:8px;
+}
+.seal-crown{font-size:1.6rem;color:#FFF3D1;line-height:1}
+.seal-txt{font-size:.42rem;letter-spacing:.14em;text-transform:uppercase;color:#FAD277;margin-top:2px}
+
+.farmaan-seal-label .f-sub{
+  font-family:var(--serif);font-size:.78rem;color:#FAD277;letter-spacing:.18em;font-style:italic;display:block;
+}
+.farmaan-seal-label .f-title{
+  font-family:var(--display);font-size:1.25rem;font-weight:700;color:#FFF4D4;
+  letter-spacing:.12em;display:block;margin:2px 0;
+  text-shadow:0 2px 8px rgba(0,0,0,.8);
+}
+.farmaan-seal-label .f-loc{
+  font-size:.66rem;color:#F5C869;letter-spacing:.14em;text-transform:uppercase;display:block;
+}
+.btn-unroll-prompt{
+  margin-top:12px;padding:8px 20px;border-radius:30px;
+  background:linear-gradient(135deg,#1E0407,#420B13);
+  border:1.5px solid #F5C869;color:#FFDF88;
+  font-family:var(--body);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;
+  font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.6);
+  animation:btnPulseFast 1.4s ease-in-out infinite;
+}
+
+/* ══════════ RESPONSIVE TWEAKS ══════════ */
+@media(max-width:960px){
+  .farmaan-stage{height:540px}
+  .farmaan-parchment-sheet{height:460px;width:calc(100% - 40px)}
+  .farmaan-content-area{inset:8px 25px}
+  .farmaan-parchment-sheet::before{inset:6px 22px}
+  .farmaan-parchment-sheet::after{inset:9px 25px}
+  .parchment-floral-border{width:28px}
+  .farmaan-chapter{flex-direction:column;gap:12px}
+  .roller-finial{width:45px}
+  .finial-svg{width:42px}
+}
+@media(max-width:680px){
+  .farmaan-sticky-wrap{top:45px;height:calc(100vh - 45px);padding:0 8px 8px}
+  .farmaan-stage{height:520px}
+  .farmaan-header h2{font-size:1.4rem}
+  .farmaan-parchment-sheet{height:440px}
+  .f-hero-img-box{width:52px;height:52px}
+}
+
+/* ═══════════ DISH POPUP MODAL WITH ANIMATION ═══════════ */
+.card-tick-badge{
+  font-size:.6rem;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);
+  color:#851D2C;border-radius:50%;width:22px;height:22px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .22s cubic-bezier(.34,1.56,.64,1);font-weight:700;
+  margin-left:6px;
+}
+.book-food-card:hover .card-tick-badge{
+  background:#851D2C;color:#FFF6E6;border-color:#851D2C;
+  transform:scale(1.2) rotate(12deg);
+  box-shadow:0 2px 8px rgba(133,29,44,.4);
+}
+
+/* Fullscreen Popup Overlay */
+.dish-modal-overlay{
+  position:fixed;inset:0;z-index:99999;
+  background:rgba(12,2,4,.82);backdrop-filter:blur(14px);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;
+  transition:opacity .28s cubic-bezier(.25,1,.3,1);
+}
+.dish-modal-overlay.active{
+  opacity:1;pointer-events:auto;
+}
+
+/* Modal Card with 3D Pop Bounce Entrance */
+.dish-modal-card{
+  width:100%;max-width:500px;
+  background:
+    radial-gradient(circle at 50% 10%, rgba(245,200,105,.18) 0%, transparent 60%),
+    linear-gradient(155deg,#240408 0%,#4A0D16 45%,#1A0205 100%);
+  border:1.5px solid #F5C869;border-radius:14px;
+  box-shadow:0 24px 70px rgba(0,0,0,.85), 0 0 40px rgba(245,200,105,.25);
+  overflow:hidden;position:relative;
+  transform:scale(.7) translateY(35px) rotateX(10deg);
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1);
+}
+.dish-modal-overlay.active .dish-modal-card{
+  transform:scale(1) translateY(0) rotateX(0deg);
+}
+
+/* Modal Close Button */
+.dish-modal-close{
+  position:absolute;top:14px;right:14px;z-index:10;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(0,0,0,.6);border:1px solid #F5C869;color:#FFF4D4;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;cursor:pointer;transition:all .2s ease;
+  backdrop-filter:blur(6px);
+}
+.dish-modal-close:hover{
+  background:#F5C869;color:#240408;transform:rotate(90deg) scale(1.1);
+}
+
+/* Modal Top Image Banner */
+.dish-modal-img-wrap{
+  position:relative;width:100%;height:220px;overflow:hidden;
+  border-bottom:1.5px solid rgba(245,200,105,.4);
+  background:#1A0407;
+}
+.dish-modal-img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:brightness(.92);transition:transform .5s ease;
+}
+.dish-modal-card:hover .dish-modal-img{
+  transform:scale(1.05);
+}
+.dish-modal-img-wrap::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 40%,rgba(36,4,8,.95) 100%);
+}
+
+/* Modal Steam Animation */
+.dish-modal-steam{
+  position:absolute;bottom:20px;right:24px;z-index:2;
+  font-size:1.8rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6));
+  animation:steamRiseAnim 2.2s infinite ease-in-out;
+}
+
+/* Modal Badge Floating on Image */
+.dish-modal-ribbon{
+  position:absolute;top:14px;left:14px;z-index:2;
+  font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;font-weight:700;
+  padding:4px 12px;border-radius:20px;
+  background:rgba(0,0,0,.65);border:1px solid #F5C869;color:#FFEBB8;
+  backdrop-filter:blur(8px);box-shadow:0 4px 12px rgba(0,0,0,.5);
+}
+
+/* Modal Content Body */
+.dish-modal-body{
+  padding:20px 24px 22px;position:relative;z-index:3;
+}
+.dish-modal-header{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  margin-bottom:6px;
+}
+.dish-modal-title{
+  font-family:var(--display);font-size:1.35rem;font-weight:700;
+  color:#FFF3D1;letter-spacing:.08em;line-height:1.2;
+}
+.dish-modal-price{
+  font-family:var(--display);font-size:1.4rem;font-weight:700;
+  color:#F5C869;flex-shrink:0;text-shadow:0 2px 8px rgba(245,200,105,.4);
+}
+.dish-modal-subrow{
+  display:flex;align-items:center;gap:10px;margin-bottom:12px;
+}
+.dish-modal-stars{
+  font-size:.75rem;color:#D49012;letter-spacing:2px;
+}
+.dish-modal-badge{
+  font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  padding:2px 9px;border-radius:20px;
+}
+
+.dish-modal-desc{
+  font-family:var(--serif);font-size:.95rem;font-style:italic;
+  color:#F7E0B8;line-height:1.6;margin-bottom:16px;
+}
+
+/* Modal Meta Grid (Specs) */
+.dish-modal-specs{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  margin-bottom:20px;padding:12px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(245,200,105,.25);
+  border-radius:8px;
+}
+.spec-item{text-align:center}
+.spec-icon{font-size:.9rem;margin-bottom:2px}
+.spec-label{font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,235,184,.6)}
+.spec-val{font-size:.75rem;color:#FFF3D1;font-weight:600;margin-top:2px}
+
+/* Modal Action Buttons */
+.dish-modal-actions{
+  display:flex;gap:10px;align-items:center;
+}
+.btn-modal-order{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(135deg,#D4AF37,#F5C869);
+  color:#1F0306;font-family:var(--body);font-size:.72rem;letter-spacing:.18em;
+  text-transform:uppercase;font-weight:700;padding:12px 18px;border-radius:6px;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:all .2s ease;box-shadow:0 4px 18px rgba(245,200,105,.35);
+}
+.btn-modal-order:hover{
+  transform:translateY(-2px);box-shadow:0 6px 24px rgba(245,200,105,.55);
+  background:linear-gradient(135deg,#F5C869,#FFF2C6);
+}
+.btn-modal-close-text{
+  padding:12px 16px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(245,200,105,.3);color:#F7E0B8;
+  font-family:var(--body);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  border-radius:6px;cursor:pointer;transition:all .2s ease;
+}
+.btn-modal-close-text:hover{
+  background:rgba(255,255,255,.15);color:#FFF;
+}
+
+/* ── GALLERY ───────────────────────────────────────────── */
+#gallery{padding:110px 0;background:var(--dark)}
+.g-wrap{max-width:1280px;margin:0 auto;padding:0 36px}
+.g-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,250px);gap:10px}
+.g-item{position:relative;overflow:hidden;border-radius:2px;cursor:pointer}
+.g-item:nth-child(1){grid-column:span 2;grid-row:span 2}
+.g-item:nth-child(4){grid-column:span 2}
+.g-bg{width:100%;height:100%;background-size:cover;background-position:center;filter:brightness(.72) saturate(.85);transition:transform .7s ease,filter .3s}
+.g-item:hover .g-bg{transform:scale(1.09);filter:brightness(.55) saturate(1.1)}
+.g-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:background .3s}
+.g-item:hover .g-ov{background:rgba(201,168,76,.1)}
+.g-ico{color:var(--gold);font-size:1.7rem;opacity:0;transform:scale(.4);transition:.3s}
+.g-item:hover .g-ico{opacity:1;transform:scale(1)}
+
+/* ── BOOK TABLE ────────────────────────────────────────── */
+#book{
+  padding:110px 0;text-align:center;
+  background:linear-gradient(135deg,rgba(13,8,0,.97) 0%,rgba(22,12,0,.93) 100%),url('https://images.unsplash.com/photo-1482275548304-a58859dc31b7?w=1400&q=60') center/cover fixed;
+}
+.book-inner{max-width:680px;margin:0 auto;padding:0 36px}
+.book-form{background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--gborder);border-radius:6px;padding:46px 44px;margin-top:46px;text-align:left}
+
+/* ── FORMS ─────────────────────────────────────────────── */
+.fg{margin-bottom:18px}
+.fg label{display:block;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.fg input,.fg textarea,.fg select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--gborder);border-radius:3px;padding:11px 15px;font-family:var(--serif);font-size:.93rem;color:var(--champ);outline:none;transition:border-color .25s}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--gold)}
+.fg textarea{height:100px;resize:vertical}
+.fg select option{background:var(--dark)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* ── CONTACT ───────────────────────────────────────────── */
+#contact{
+  padding:110px 0;
+  background:linear-gradient(to bottom,rgba(13,8,0,.97) 0%,rgba(22,12,0,.92) 100%),url('https://images.unsplash.com/photo-1559329007-40df8a9345d8?w=1400&q=60') center/cover fixed;
+}
+.c-grid{display:grid;grid-template-columns:1fr 1fr;gap:75px}
+.c-info h2{font-family:var(--display);font-size:1.9rem;color:var(--champ);margin-bottom:28px}
+.c-item{display:flex;align-items:flex-start;gap:16px;margin-bottom:24px}
+.c-icon{width:42px;height:42px;border:1px solid var(--gborder);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.85rem;flex-shrink:0}
+.c-label{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.c-val{font-family:var(--serif);font-size:.92rem;color:rgba(245,230,200,.78);line-height:1.7}
+.c-form{background:var(--glass);backdrop-filter:blur(18px);border:1px solid var(--gborder);border-radius:4px;padding:40px 38px}
+.c-form h3{font-family:var(--display);font-size:1.25rem;color:var(--champ);margin-bottom:26px}
+
+/* ── LOCATION ──────────────────────────────────────────── */
+#location{padding:100px 0;background:var(--dark)}
+.loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.map-box{position:relative;border-radius:4px;overflow:hidden;border:1px solid var(--gborder)}
+.map-box iframe{width:100%;height:370px;display:block;filter:brightness(.78) sepia(.18) saturate(.9)}
+.loc-info h3{font-family:var(--display);font-size:1.75rem;color:var(--champ);margin-bottom:22px}
+.loc-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
+.loc-item span{color:var(--gold);margin-top:2px;font-size:1rem}
+.loc-item p{font-family:var(--serif);font-size:.95rem;color:rgba(245,230,200,.78);line-height:1.7}
+.hours{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:24px;padding:22px;background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--gborder);border-radius:4px}
+.hi{display:flex;justify-content:space-between;padding:5px 0;font-size:.82rem}
+.hi .d{color:rgba(245,230,200,.55)}.hi .t{color:var(--gold);font-family:var(--body)}
+
+/* ── REVIEWS ───────────────────────────────────────────── */
+#reviews{padding:110px 0;background:radial-gradient(ellipse at center top,rgba(201,168,76,.04) 0%,transparent 55%),var(--dark)}
+.rv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:56px}
+.rv-card{background:var(--glass);backdrop-filter:blur(14px);border:1px solid var(--gborder);border-radius:4px;padding:30px;position:relative;transition:var(--ease)}
+.rv-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 10px 30px rgba(201,168,76,.14)}
+.rv-quote{position:absolute;top:18px;right:22px;font-size:4rem;line-height:1;color:rgba(201,168,76,.1);font-family:Georgia,serif}
+.rv-stars{color:var(--gold);font-size:.82rem;margin-bottom:14px;letter-spacing:4px}
+.rv-text{font-family:var(--serif);font-size:1.02rem;font-style:italic;line-height:1.8;color:rgba(245,230,200,.83);margin-bottom:22px}
+.rv-author{display:flex;align-items:center;gap:13px}
+.rv-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dk),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1rem;color:var(--dark);font-weight:700}
+.rv-name{font-family:var(--body);font-weight:600;font-size:.88rem;color:var(--champ)}
+.rv-loc{font-size:.66rem;color:rgba(245,230,200,.48);margin-top:2px}
+.rv-plat{position:absolute;bottom:18px;right:18px;font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);opacity:.45}
+
+/* ── FOOTER ────────────────────────────────────────────── */
+footer{background:var(--dbrown);border-top:1px solid var(--gborder);padding:75px 0 0}
+.ft-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:55px;padding:0 56px 55px;max-width:1200px;margin:0 auto}
+.ft-brand .bn{font-family:var(--display);font-size:1.4rem;color:var(--gold);letter-spacing:.12em;margin-bottom:14px}
+.ft-brand p{font-family:var(--serif);font-size:.88rem;line-height:1.8;color:rgba(245,230,200,.5);margin-bottom:24px}
+.ft-head{font-family:var(--display);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.ft-links{list-style:none}
+.ft-links li{margin-bottom:11px}
+.ft-links a{font-size:.85rem;color:rgba(245,230,200,.5);transition:color .25s;display:flex;align-items:center;gap:7px}
+.ft-links a::before{content:'';width:14px;height:1px;background:var(--gold);opacity:0;transition:opacity .25s}
+.ft-links a:hover{color:var(--gold)}
+.ft-links a:hover::before{opacity:1}
+.ft-ci{display:flex;align-items:flex-start;gap:11px;margin-bottom:14px;font-size:.82rem;color:rgba(245,230,200,.5);line-height:1.6}
+
+/* SOCIAL WIDGETS */
+.social-section{border-top:1px solid var(--gborder);border-bottom:1px solid var(--gborder);padding:48px 0;text-align:center}
+.social-label{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;font-family:var(--body)}
+.soc-widgets{display:flex;justify-content:center;gap:22px;flex-wrap:wrap}
+.sw{display:flex;align-items:center;gap:13px;background:var(--glass);backdrop-filter:blur(14px);border:1px solid var(--gborder);border-radius:8px;padding:15px 26px;min-width:190px;transition:var(--ease)}
+.sw:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 24px rgba(201,168,76,.18)}
+.sw-ico{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.sw.ig .sw-ico{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+.sw.fb .sw-ico{background:#1877f2}.sw.yt .sw-ico{background:#ff0000}
+.sw-pname{font-family:var(--body);font-size:.8rem;font-weight:600;color:var(--champ);margin-bottom:2px}
+.sw-handle{font-size:.7rem;color:rgba(245,230,200,.48)}
+.sw-follow{font-size:.57rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-top:4px}
+
+.ft-bottom{border-top:1px solid var(--gborder);padding:24px 56px;display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto}
+.ft-bottom p{font-size:.72rem;color:rgba(245,230,200,.32);letter-spacing:.04em}
+.ft-bottom .gld{color:var(--gold)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease}
+.reveal.vis{opacity:1;transform:none}
+
+/* BACK TO TOP */
+#btt{position:fixed;bottom:36px;right:28px;width:44px;height:44px;background:var(--gold);color:var(--dark);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;opacity:0;pointer-events:none;transition:var(--ease);z-index:800;box-shadow:0 4px 14px rgba(201,168,76,.38)}
+#btt.show{opacity:1;pointer-events:auto}
+#btt:hover{transform:translateY(-3px)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .about-grid,.c-grid,.loc-grid{grid-template-columns:1fr;gap:46px}
+  .g-grid{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,210px)}
+  .g-item:nth-child(1){grid-column:span 2}.g-item:nth-child(4){grid-column:span 1}
+  .rv-grid{grid-template-columns:repeat(2,1fr)}
+  .ft-grid{grid-template-columns:1fr 1fr;gap:36px}
+}
+@media(max-width:768px){
+  #nav{padding:14px 22px}#nav.scrolled{padding:10px 22px}
+  .nav-ul{display:none}.ham{display:flex}
+  .hero-left,.hero-divider{display:none}
+  .hero-right{flex:1;padding:38px 26px}
+  .hero-tiny,.float-cta{display:none}
+  .g-grid{grid-template-columns:1fr 1fr}
+  .rv-grid{grid-template-columns:1fr}
+  .ft-grid{grid-template-columns:1fr;gap:28px;padding:0 22px 40px}
+  .sec{padding:80px 0}.wrap{padding:0 22px}
+  .book-form,.c-form{padding:26px 22px}
+  .ft-bottom{flex-direction:column;gap:8px;text-align:center;padding:20px 22px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld-logo">&#9818; ROYAL</div>
+  <div class="ld-bar"><div class="ld-fill"></div></div>
+  <p style="font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(201,168,76,.5);margin-top:8px">Ore Chakand · Gaya · Bihar</p>
+</div>
+
+<!-- MOBILE NAV -->
+<div id="mob-nav">
+  <button id="mob-close" onclick="closeMob()">&#10005;</button>
+  <a href="#hero"    onclick="closeMob()">Home</a>
+  <a href="#menu"    onclick="closeMob()">Menu</a>
+  <a href="#about"   onclick="closeMob()">About</a>
+  <a href="#gallery" onclick="closeMob()">Gallery</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
+  <a href="#book"    onclick="closeMob()">Book Table</a>
+  <a href="#location" onclick="closeMob()">Location</a>
+</div>
+
+<!-- NAVBAR -->
+<nav id="nav">
+  <a href="#hero" class="logo">
+    <div class="logo-circle">R</div>
+    <div class="logo-text">
+      <div class="n">ROYAL RESTAURANT</div>
+      <div class="s">Ore Chakand &nbsp;·&nbsp; Gaya, Bihar</div>
+    </div>
+  </a>
+  <ul class="nav-ul">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#location">Location</a></li>
+    <li><a href="#book" class="nav-book">Book Table</a></li>
+  </ul>
+  <div class="ham" onclick="openMob()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- FLOATING CTA (left side) -->
+<div class="float-cta">
+  <a href="#book">
+    <span class="float-ico">&#127859;</span>
+    Reserve a Table
+  </a>
+</div>
+
+<!-- ══════════════════════════ HERO ══════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-food-img"></div>
+  <div class="candle-ov"></div>
+  <div class="hero-vignette"></div>
+
+  <div class="hero-split">
+
+    <!-- LEFT: Interior photo -->
+    <div class="hero-left">
+      <div class="hl-img"></div>
+      <div class="hl-content reveal">
+        <div class="hl-label">Est. 2005</div>
+        <div class="hl-title">Where every<br/><strong>table tells</strong><br/>a story</div>
+      </div>
+    </div>
+
+    <!-- Center gold divider -->
+    <div class="hero-divider"><div class="hd-gem"></div></div>
+
+    <!-- RIGHT: Main hero content -->
+    <div class="hero-right">
+      <div class="hero-tiny tr">Ore Chakand &nbsp;·&nbsp; Gaya &nbsp;·&nbsp; Bihar</div>
+      <div class="hero-tiny br">Since 2005</div>
+
+      <div class="hero-content reveal">
+        <div class="pill">
+          <span class="crown">&#9818;</span>
+          Ore Chakand, Gaya, Bihar
+          <span class="crown">&#9818;</span>
+        </div>
+        <p class="hero-eye">A Royal Experience Awaits</p>
+        <h1 class="hero-h1"><span class="gw">Royal</span><br/>Restaurant</h1>
+        <p class="hero-sub">Crafted with Passion, Served with Pride</p>
+        <p class="hero-world">Enter the World of Royal Taste</p>
+        <div class="hero-ctas">
+          <a href="#book" class="btn-gold"><i class="fas fa-utensils"></i> Reserve a Table</a>
+          <a href="#menu" class="btn-glass">
+            Explore the Menu
+            <span style="display:inline-flex;align-items:center;gap:6px">
+              <span class="arrow-ring"><span class="arrow-ico">&#8594;</span></span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /hero-split -->
+
+  <div class="scroll-hint">
+    <span>Scroll to Discover</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ ABOUT ══════════════════════════ -->
+<section id="about" class="sec">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <div class="about-photo"></div>
+        <div class="about-border"></div>
+        <div class="corner c-tl"></div><div class="corner c-tr"></div>
+        <div class="corner c-bl"></div><div class="corner c-br"></div>
+        <div class="about-badge"><div class="yr">20+</div><div class="es">Years of<br/>Excellence</div></div>
+      </div>
+      <div class="about-text reveal">
+        <div class="pill"><span class="crown">&#9818;</span> Our Story</div>
+        <h2>A Legacy of<br/><em style="font-family:var(--serif);font-weight:300;color:var(--gold)">Royal Cuisine</em></h2>
+        <div class="divider"><div class="gem"></div></div>
+        <p>Nestled in the heart of Ore Chakand, Gaya, Bihar, <strong style="color:var(--champ)">Royal Restaurant</strong> has been a cherished culinary destination for over two decades. Founded with a vision to bring the grandeur of Maharaja dining to every guest, we blend royal traditions with the finest local flavours.</p>
+        <p>Our chefs, trained in the art of Bihari and Mughal cuisine, hand-select the freshest ingredients daily. From aromatic biryanis to melt-in-your-mouth kebabs, every dish is a tribute to Bihar's rich gastronomic heritage.</p>
+        <p>Step inside and be transported to an era of elegance — golden chandeliers shimmer, silk curtains sway, and every meal is a celebration.</p>
+        <div class="stats">
+          <div class="stat"><div class="n">50+</div><div class="l">Signature Dishes</div></div>
+          <div class="stat"><div class="n">10K+</div><div class="l">Happy Guests</div></div>
+          <div class="stat"><div class="n">20+</div><div class="l">Years Legacy</div></div>
+          <div class="stat"><div class="n">4.9&#9733;</div><div class="l">Rating</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ MENU (3D ANIMATED BOOK) ══════════════════════════ -->
+<section id="menu">
+
+  <!-- Floating cheesy food emojis in background -->
+  <div class="menu-floating-foods">
+    <div class="float-food" style="top:8%;left:6%;animation-delay:0s;">🍗</div>
+    <div class="float-food" style="top:18%;right:8%;animation-delay:1.5s;">🍜</div>
+    <div class="float-food" style="top:42%;left:3%;animation-delay:3s;">🥟</div>
+    <div class="float-food" style="top:65%;right:5%;animation-delay:2s;">🍛</div>
+    <div class="float-food" style="top:80%;left:8%;animation-delay:4s;">🍮</div>
+    <div class="float-food" style="top:25%;left:12%;animation-delay:2.5s;">🥤</div>
+    <div class="float-food" style="top:75%;right:12%;animation-delay:3.5s;">🍕</div>
+    <div class="float-food" style="top:55%;right:2%;animation-delay:1s;">🧀</div>
+  </div>
+
+  <!-- Sticky Pin Container for 3D Elevated Royal Farmaan Scroll -->
+  <div class="farmaan-sticky-wrap" id="farmaanStickyWrap">
+
+    <!-- Header & Chapter Navigation -->
+    <div class="farmaan-header">
+      <div class="pill" style="justify-content:center"><span class="crown">&#9818;</span> राजशाही संदेशनामा • शाही दस्तरख्वान</div>
+      <h2>The Imperial Royal Farmaan</h2>
+      <p class="farmaan-subtitle">प्राचीन राजशाही संदेशनामा — नीचे स्क्रोल करें और शाही दावत के पन्ने पलटें</p>
+
+      <!-- Chapter Progress Pills -->
+      <div class="farmaan-nav-pills" id="farmaanNavPills">
+        <button class="farmaan-pill active" id="pillChapter1" onclick="goToFarmaanChapter(1)">
+          <span>१.</span> <span>🍢 स्टार्टर व कबाब</span>
+        </button>
+        <button class="farmaan-pill" id="pillChapter2" onclick="goToFarmaanChapter(2)">
+          <span>२.</span> <span>👑 महाराजा थाली व व्यंजन</span>
+        </button>
+        <button class="farmaan-pill" id="pillChapter3" onclick="goToFarmaanChapter(3)">
+          <span>३.</span> <span>🍧 पेय व शाही मिष्ठान</span>
+        </button>
+        <button class="farmaan-pill farmaan-roll-toggle" id="pillRollToggle" onclick="toggleFarmaanRollManual()">
+          <span id="rollBtnIcon">📜</span> <span id="rollBtnText">फ़रमान खोलें</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3D Elevated Stage -->
+    <div class="farmaan-stage" id="farmaanStage">
+
+      <!-- 3D Realistic Ground Elevation Shadow -->
+      <div class="farmaan-ground-shadow"></div>
+
+      <!-- THE ROYAL SCROLL CONTAINER (Starts CLOSED by default) -->
+      <div class="farmaan-scroll-box is-rolled" id="farmaanScrollBox">
+
+        <!-- TOP ROLLER SPINDLE -->
+        <div class="farmaan-roller top-roller" id="topRoller">
+          <!-- Left Turned Brass Finial -->
+          <div class="roller-finial left-finial">
+            <svg viewBox="0 0 100 60" class="finial-svg">
+              <defs>
+                <linearGradient id="brassGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#F5E4A8"/>
+                  <stop offset="25%" stop-color="#FFF8E0"/>
+                  <stop offset="50%" stop-color="#C29438"/>
+                  <stop offset="75%" stop-color="#734F12"/>
+                  <stop offset="100%" stop-color="#A67B22"/>
+                </linearGradient>
+                <linearGradient id="gemGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#3A080E"/>
+                  <stop offset="100%" stop-color="#080102"/>
+                </linearGradient>
+              </defs>
+              <ellipse cx="88" cy="30" rx="9" ry="26" fill="url(#brassGrad1)"/>
+              <rect x="74" y="10" width="14" height="40" rx="3" fill="url(#brassGrad1)"/>
+              <ellipse cx="74" cy="30" rx="7" ry="20" fill="url(#brassGrad1)"/>
+              <rect x="52" y="15" width="22" height="30" rx="3" fill="url(#brassGrad1)"/>
+              <path d="M 28 30 C 28 16, 52 14, 52 30 C 52 46, 28 44, 28 30 Z" fill="url(#brassGrad1)"/>
+              <polygon points="12,30 28,21 28,39" fill="url(#brassGrad1)"/>
+              <circle cx="10" cy="30" r="7" fill="url(#gemGrad1)"/>
+              <circle cx="9" cy="28" r="2.5" fill="#FFEAA8" opacity="0.85"/>
+            </svg>
+          </div>
+
+          <!-- Central Cylinder Bar -->
+          <div class="roller-cylinder">
+            <div class="roller-shimmer"></div>
+            <div class="roller-filigree-band"></div>
+          </div>
+
+          <!-- Right Turned Brass Finial -->
+          <div class="roller-finial right-finial">
+            <svg viewBox="0 0 100 60" class="finial-svg" style="transform:scaleX(-1);">
+              <ellipse cx="88" cy="30" rx="9" ry="26" fill="url(#brassGrad1)"/>
+              <rect x="74" y="10" width="14" height="40" rx="3" fill="url(#brassGrad1)"/>
+              <ellipse cx="74" cy="30" rx="7" ry="20" fill="url(#brassGrad1)"/>
+              <rect x="52" y="15" width="22" height="30" rx="3" fill="url(#brassGrad1)"/>
+              <path d="M 28 30 C 28 16, 52 14, 52 30 C 52 46, 28 44, 28 30 Z" fill="url(#brassGrad1)"/>
+              <polygon points="12,30 28,21 28,39" fill="url(#brassGrad1)"/>
+              <circle cx="10" cy="30" r="7" fill="url(#gemGrad1)"/>
+              <circle cx="9" cy="28" r="2.5" fill="#FFEAA8" opacity="0.85"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- THE UNROLLED PARCHMENT SHEET (FARMAAN CANVAS) -->
+        <div class="farmaan-parchment-sheet" id="farmaanParchmentSheet">
+
+          <!-- Left Ornate Floral Vine Filigree Border (identical to reference image) -->
+          <div class="parchment-floral-border left-border">
+            <svg viewBox="0 0 70 600" preserveAspectRatio="none" class="floral-vine-svg">
+              <defs>
+                <linearGradient id="goldVineGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#C29438" stop-opacity="0.85"/>
+                  <stop offset="50%" stop-color="#8E651E" stop-opacity="0.95"/>
+                  <stop offset="100%" stop-color="#C29438" stop-opacity="0.85"/>
+                </linearGradient>
+              </defs>
+              <g fill="none" stroke="url(#goldVineGrad1)" stroke-width="2">
+                <path d="M 45 10 Q 15 80 45 150 T 45 300 T 45 450 T 45 590"/>
+                <path d="M 45 40 C 20 30 15 55 35 65 C 40 50 45 40 45 40 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <path d="M 45 110 C 62 100 68 125 50 135 C 44 125 45 110 45 110 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <path d="M 45 190 C 18 175 12 210 32 220 C 40 205 45 190 45 190 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <path d="M 45 270 C 65 255 70 290 52 300 C 45 285 45 270 45 270 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <path d="M 45 350 C 18 335 12 370 32 380 C 40 365 45 350 45 350 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <path d="M 45 430 C 65 415 70 450 52 460 C 45 445 45 430 45 430 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <path d="M 45 510 C 20 495 15 530 35 540 C 42 525 45 510 45 510 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <circle cx="30" cy="80" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+                <circle cx="58" cy="150" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+                <circle cx="28" cy="240" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+                <circle cx="60" cy="320" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+                <circle cx="28" cy="400" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+                <circle cx="60" cy="480" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+                <circle cx="30" cy="560" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Right Ornate Floral Vine Filigree Border (mirrored) -->
+          <div class="parchment-floral-border right-border">
+            <svg viewBox="0 0 70 600" preserveAspectRatio="none" class="floral-vine-svg" style="transform:scaleX(-1);">
+              <g fill="none" stroke="url(#goldVineGrad1)" stroke-width="2">
+                <path d="M 45 10 Q 15 80 45 150 T 45 300 T 45 450 T 45 590"/>
+                <path d="M 45 40 C 20 30 15 55 35 65 C 40 50 45 40 45 40 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <path d="M 45 110 C 62 100 68 125 50 135 C 44 125 45 110 45 110 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <path d="M 45 190 C 18 175 12 210 32 220 C 40 205 45 190 45 190 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <path d="M 45 270 C 65 255 70 290 52 300 C 45 285 45 270 45 270 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <path d="M 45 350 C 18 335 12 370 32 380 C 40 365 45 350 45 350 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <path d="M 45 430 C 65 415 70 450 52 460 C 45 445 45 430 45 430 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <path d="M 45 510 C 20 495 15 530 35 540 C 42 525 45 510 45 510 Z" fill="url(#goldVineGrad1)" fill-opacity="0.22"/>
+                <circle cx="30" cy="80" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+                <circle cx="58" cy="150" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+                <circle cx="28" cy="240" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+                <circle cx="60" cy="320" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+                <circle cx="28" cy="400" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+                <circle cx="60" cy="480" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+                <circle cx="30" cy="560" r="5" fill="url(#goldVineGrad1)" fill-opacity="0.35"/>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Central Content Viewport for 3 Chapters -->
+          <div class="farmaan-content-area" id="farmaanContentArea">
+
+            <!-- ══════════ CHAPTER 1: STARTERS ══════════ -->
+            <div class="farmaan-chapter active" id="farmaanChapter1" data-chapter="1">
+              <!-- Left Column: Veg Starters -->
+              <div class="farmaan-col">
+                <div class="farmaan-col-head">
+                  <div class="farmaan-kicker">अध्याय १ • शाकाहारी स्टार्टर</div>
+                  <div class="farmaan-col-title">शाही वेज स्टार्टर (Veg Starters)</div>
+                  <div class="farmaan-gold-sep"></div>
+                </div>
+
+                <!-- Hero Highlight Card -->
+                <div class="farmaan-hero-card" onclick="showDishByKey('paneer-tikka')" title="Click to view details &amp; order">
+                  <div class="f-hero-img-box">
+                    <span class="f-hero-steam">♨️</span>
+                    <img src="paneer_lababdar.jpg" alt="Paneer Tikka Angara" onerror="this.src='images/paneer-thali.jpg'"/>
+                  </div>
+                  <div class="f-hero-info">
+                    <span class="f-hero-badge bt-chef">शेफ़ स्पेशल • Tandoori</span>
+                    <div class="f-hero-name">पनीर टिक्का अंगारा (Paneer Tikka)</div>
+                    <div class="f-hero-desc">Charcoal-grilled cottage cheese in saffron yogurt marinade</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px;">
+                      <span class="f-hero-price">₹240</span>
+                      <span class="card-tick-badge" title="Click to inspect dish">✓</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 4 Compact Dish Rows -->
+                <div class="farmaan-dish-card" onclick="showDishByKey('hara-bhara')">
+                  <div class="f-dish-thumb">🥗</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">हरा भरा कबाब (Hara Bhara Kebab)</div>
+                    <div class="f-dish-desc">Crispy spinach, green pea &amp; paneer patties with royal spices</div>
+                  </div>
+                  <span class="f-dish-price">₹190</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('crispy-corn')">
+                  <div class="f-dish-thumb">🌽</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">क्रिस्पी कॉर्न चाट (Crispy Corn)</div>
+                    <div class="f-dish-desc">Golden fried kernels tossed with lime, chaat masala &amp; mint</div>
+                  </div>
+                  <span class="f-dish-price">₹160</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('malai-broccoli')">
+                  <div class="f-dish-thumb">🥦</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">मलाई ब्रोकोली (Malai Broccoli)</div>
+                    <div class="f-dish-desc">Char-grilled florets steeped in cardamom cream &amp; mild cheese</div>
+                  </div>
+                  <span class="f-dish-price">₹220</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('dahi-sholay')">
+                  <div class="f-dish-thumb">🥟</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">दही के शोले (Dahi Ke Sholay)</div>
+                    <div class="f-dish-desc">Golden crisp pockets filled with hung curd, peppers &amp; mint</div>
+                  </div>
+                  <span class="f-dish-price">₹180</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <button class="farmaan-col-btn" onclick="goToFarmaanChapter(2)">
+                  २. थाली व खास व्यंजन ➔
+                </button>
+              </div>
+
+              <!-- Right Column: Non-Veg Starters -->
+              <div class="farmaan-col">
+                <div class="farmaan-col-head">
+                  <div class="farmaan-kicker">दस्तरख्वान के कबाब • मांसाहारी</div>
+                  <div class="farmaan-col-title">नॉन-वेज व तंदूरी स्टार्टर (Non-Veg)</div>
+                  <div class="farmaan-gold-sep"></div>
+                </div>
+
+                <!-- Hero Highlight Card -->
+                <div class="farmaan-hero-card" onclick="showDishByKey('murgh-malai')" title="Click to view details &amp; order">
+                  <div class="f-hero-img-box">
+                    <span class="f-hero-steam">♨️</span>
+                    <img src="images/chicken-pop.jpg" alt="Murgh Malai Tikka" onerror="this.src='chicken_leg.jpg'"/>
+                  </div>
+                  <div class="f-hero-info">
+                    <span class="f-hero-badge bt-nonveg">शाही कबाब • Signature</span>
+                    <div class="f-hero-name">मुर्ग मलाई टिक्का (Murgh Malai)</div>
+                    <div class="f-hero-desc">Tender chicken steeped in cashew cream, royal saffron &amp; cheese</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px;">
+                      <span class="f-hero-price">₹290</span>
+                      <span class="card-tick-badge" title="Click to inspect dish">✓</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 4 Compact Dish Rows -->
+                <div class="farmaan-dish-card" onclick="showDishByKey('galouti-kebab')">
+                  <div class="f-dish-thumb">🍖</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">गलौटी कबाब (Galouti Kebab)</div>
+                    <div class="f-dish-desc">Melt-in-mouth mutton mince crafted with 32 secret spices</div>
+                  </div>
+                  <span class="f-dish-price">₹340</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('mutton-seekh')">
+                  <div class="f-dish-thumb">🍢</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">मटन सीक कबाब (Mutton Seekh)</div>
+                    <div class="f-dish-desc">Smoked minced lamb skewered with fresh herbs &amp; garam masala</div>
+                  </div>
+                  <span class="f-dish-price">₹320</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('tandoori-tangdi')">
+                  <div class="f-dish-thumb"><img src="chicken_leg.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:4px;" alt="Tangdi" onerror="this.parentElement.innerHTML='🍗'"/></div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">तंदूरी टांगड़ी कबाब (Tandoori Tangdi)</div>
+                    <div class="f-dish-desc">Juicy drumsticks marinated in mustard oil, hung curd &amp; degi mirch</div>
+                  </div>
+                  <span class="f-dish-price">₹260</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('amritsari-fish')">
+                  <div class="f-dish-thumb">🐟</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">अमृतसरी फ़िश फ़्राई (Amritsari Fish)</div>
+                    <div class="f-dish-desc">Crispy carom seed batter-fried fish fillets with tangy tartar dip</div>
+                  </div>
+                  <span class="f-dish-price">₹280</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div style="margin-top:auto;text-align:right;font-size:.65rem;color:#851D2C;letter-spacing:.15em;font-weight:700;padding-right:6px;">
+                  अध्याय १ / ३
+                </div>
+              </div>
+            </div>
+
+            <!-- ══════════ CHAPTER 2: MAHARAJA THALI & MAINS ══════════ -->
+            <div class="farmaan-chapter" id="farmaanChapter2" data-chapter="2">
+              <!-- Left Column: Maharaja Shahi Thali -->
+              <div class="farmaan-col">
+                <div class="farmaan-col-head">
+                  <div class="farmaan-kicker">अध्याय २ • राजसी भोग</div>
+                  <div class="farmaan-col-title">महाराजा शाही थाली (Grand Thali)</div>
+                  <div class="farmaan-gold-sep"></div>
+                </div>
+
+                <!-- Hero Highlight Card -->
+                <div class="farmaan-hero-card" onclick="showDishByKey('maharaja-thali')" title="Click to view details &amp; order">
+                  <div class="f-hero-img-box">
+                    <span class="f-hero-steam">♨️</span>
+                    <img src="images/paneer-thali.jpg" alt="Maharaja Shahi Thali" onerror="this.src='paneer_lababdar.jpg'"/>
+                  </div>
+                  <div class="f-hero-info">
+                    <span class="f-hero-badge bt-chef">शाही थाली • Grand Feast</span>
+                    <div class="f-hero-name">महाराजा शाही थाली (Imperial Thali)</div>
+                    <div class="f-hero-desc">Dal Makhani, Shahi Paneer, Champaran Meat/Kofta, Basmati Rice, 2 Naan &amp; Phirni</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px;">
+                      <span class="f-hero-price">₹480</span>
+                      <span class="card-tick-badge" title="Click to inspect dish">✓</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 4 Regional Specialties -->
+                <div class="farmaan-dish-card" onclick="showDishByKey('champaran-handi')">
+                  <div class="f-dish-thumb">🏺</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">चंपारण आहुना मटन (Champaran Ahuna)</div>
+                    <div class="f-dish-desc">Authentic earthen pot mutton slow-cooked in mustard oil &amp; garlic</div>
+                  </div>
+                  <span class="f-dish-price">₹380</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('litti-chokha')">
+                  <div class="f-dish-thumb">🫓</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">शाही लिट्टी चोखा (Litti Chokha Royale)</div>
+                    <div class="f-dish-desc">Coal-roasted sattu littis dipped in pure desi ghee with baingan bharta</div>
+                  </div>
+                  <span class="f-dish-price">₹220</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('shahi-kofta')">
+                  <div class="f-dish-thumb">🧆</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">शाही मलाई कोफ़्ता (Shahi Malai Kofta)</div>
+                    <div class="f-dish-desc">Paneer &amp; mawa dumplings simmered in velvety cashew-saffron gravy</div>
+                  </div>
+                  <span class="f-dish-price">₹250</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('dal-makhani')">
+                  <div class="f-dish-thumb">🍲</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">दाल मखनी बुखारा (Dal Makhani Bukhara)</div>
+                    <div class="f-dish-desc">Black lentils slow-cooked for 24 hours on coal with white butter</div>
+                  </div>
+                  <span class="f-dish-price">₹210</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div style="display:flex;gap:8px;justify-content:center;margin-top:auto;">
+                  <button class="farmaan-col-btn prev-style" onclick="goToFarmaanChapter(1)">◀ १. स्टार्टर</button>
+                  <button class="farmaan-col-btn" onclick="goToFarmaanChapter(3)">३. पेय व मिष्ठान ➔</button>
+                </div>
+              </div>
+
+              <!-- Right Column: Royal Curries & Dum Biryani -->
+              <div class="farmaan-col">
+                <div class="farmaan-col-head">
+                  <div class="farmaan-kicker">शाही सालन व दम हांडी</div>
+                  <div class="farmaan-col-title">खास करी व दम बिरयानी (Curries &amp; Biryani)</div>
+                  <div class="farmaan-gold-sep"></div>
+                </div>
+
+                <!-- Hero Highlight Card -->
+                <div class="farmaan-hero-card" onclick="showDishByKey('dum-biryani')" title="Click to view details &amp; order">
+                  <div class="f-hero-img-box">
+                    <span class="f-hero-steam">♨️</span>
+                    <img src="images/chicken-pop.jpg" alt="Awadhi Dum Biryani" onerror="this.src='chicken_leg.jpg'"/>
+                  </div>
+                  <div class="f-hero-info">
+                    <span class="f-hero-badge bt-nonveg">दम पुख़्त • Awadhi</span>
+                    <div class="f-hero-name">अवधी दम बिरयानी (Awadhi Dum Biryani)</div>
+                    <div class="f-hero-desc">Fragrant basmati layered with tender chicken, brown onions &amp; kesar ghee</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px;">
+                      <span class="f-hero-price">₹320</span>
+                      <span class="card-tick-badge" title="Click to inspect dish">✓</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 4 Compact Dish Rows -->
+                <div class="farmaan-dish-card" onclick="showDishByKey('paneer-lababdar')">
+                  <div class="f-dish-thumb"><img src="paneer_lababdar.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:4px;" alt="Paneer Lababdar" onerror="this.parentElement.innerHTML='🧀'"/></div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">पनीर लबाबदार (Paneer Lababdar)</div>
+                    <div class="f-dish-desc">Handcrafted paneer in rich tomato-onion gravy scented with kasuri methi</div>
+                  </div>
+                  <span class="f-dish-price">₹260</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('bihari-mutton')">
+                  <div class="f-dish-thumb">🥘</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">बिहारी मटन करी (Bihari Mutton Curry)</div>
+                    <div class="f-dish-desc">Rustic brass handi lamb curry cooked with whole crushed spices &amp; garlic</div>
+                  </div>
+                  <span class="f-dish-price">₹360</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('butter-chicken')">
+                  <div class="f-dish-thumb">🍗</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">बटर चिकन असल-ए-शाही (Butter Chicken)</div>
+                    <div class="f-dish-desc">Charcoal-roasted tandoori chicken simmered in rich creamy tomato silk</div>
+                  </div>
+                  <span class="f-dish-price">₹310</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('veg-biryani')">
+                  <div class="f-dish-thumb">🍚</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">निज़ामी वेज दम बिरयानी (Nizami Veg)</div>
+                    <div class="f-dish-desc">Garden vegetables, fresh mint &amp; long basmati sealed in earthen handi</div>
+                  </div>
+                  <span class="f-dish-price">₹230</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div style="margin-top:auto;text-align:right;font-size:.65rem;color:#851D2C;letter-spacing:.15em;font-weight:700;padding-right:6px;">
+                  अध्याय २ / ३
+                </div>
+              </div>
+            </div>
+
+            <!-- ══════════ CHAPTER 3: DRINKS & ROYAL DESSERTS ══════════ -->
+            <div class="farmaan-chapter" id="farmaanChapter3" data-chapter="3">
+              <!-- Left Column: Royal Drinks & Sharbats -->
+              <div class="farmaan-col">
+                <div class="farmaan-col-head">
+                  <div class="farmaan-kicker">अध्याय ३ • शाही पेय</div>
+                  <div class="farmaan-col-title">शाही पेय व शर्बत (Drinks &amp; Elixirs)</div>
+                  <div class="farmaan-gold-sep"></div>
+                </div>
+
+                <!-- Hero Highlight Card -->
+                <div class="farmaan-hero-card" onclick="showDishByKey('mango-lassi')" title="Click to view details &amp; order">
+                  <div class="f-hero-img-box">
+                    <span class="f-hero-steam">❄️</span>
+                    <img src="https://images.unsplash.com/photo-1556881286-fc6915169721?w=500&amp;q=80" alt="Royal Mango Lassi" onerror="this.src='images/paneer-thali.jpg'"/>
+                  </div>
+                  <div class="f-hero-info">
+                    <span class="f-hero-badge bt-drink">ठंडा अमृत • Summer Star</span>
+                    <div class="f-hero-name">रॉयल मैंगो लस्सी (Royal Mango Lassi)</div>
+                    <div class="f-hero-desc">Creamy yogurt whipped with Alphonso pulp, kesar strands &amp; dry fruits</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px;">
+                      <span class="f-hero-price">₹90</span>
+                      <span class="card-tick-badge" title="Click to inspect dish">✓</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 4 Compact Dish Rows -->
+                <div class="farmaan-dish-card" onclick="showDishByKey('kahwa-gold')">
+                  <div class="f-dish-thumb">☕</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">कहलवा गोल्ड चाय (Kahwa Gold Tea)</div>
+                    <div class="f-dish-desc">Kashmiri green tea brewed with saffron, slivered almonds &amp; cinnamon</div>
+                  </div>
+                  <span class="f-dish-price">₹70</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('rose-falooda')">
+                  <div class="f-dish-thumb">🌹</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">गुलाब शर्बत फ़ालूदा (Rose Falooda)</div>
+                    <div class="f-dish-desc">Damascus rose milk with basil seeds, chilled vermicelli &amp; kulfi scoop</div>
+                  </div>
+                  <span class="f-dish-price">₹80</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('masala-nimbu')">
+                  <div class="f-dish-thumb">🍋</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">शाही मसाला नींबू सोडा (Nimbu Soda)</div>
+                    <div class="f-dish-desc">Fresh lime fizz with roasted cumin, rock salt &amp; crisp garden mint</div>
+                  </div>
+                  <span class="f-dish-price">₹50</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('kesar-badam')">
+                  <div class="f-dish-thumb">🥛</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">केसर बादाम शाही दूध (Kesar Badam)</div>
+                    <div class="f-dish-desc">Warm nourishing milk boiled with almond paste, cardamom &amp; saffron</div>
+                  </div>
+                  <span class="f-dish-price">₹80</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <button class="farmaan-col-btn prev-style" onclick="goToFarmaanChapter(2)" style="margin-top:auto;">
+                  ◀ २. थाली व व्यंजन
+                </button>
+              </div>
+
+              <!-- Right Column: Royal Desserts & Mithai -->
+              <div class="farmaan-col">
+                <div class="farmaan-col-head">
+                  <div class="farmaan-kicker">शाही मिष्ठान भंडार • मधुर अंत</div>
+                  <div class="farmaan-col-title">शाही मिष्ठान (Royal Desserts)</div>
+                  <div class="farmaan-gold-sep"></div>
+                </div>
+
+                <!-- Hero Highlight Card -->
+                <div class="farmaan-hero-card" onclick="showDishByKey('shahi-phirni')" title="Click to view details &amp; order">
+                  <div class="f-hero-img-box">
+                    <span class="f-hero-steam">🍮</span>
+                    <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500&amp;q=80" alt="Shahi Phirni" onerror="this.src='images/paneer-thali.jpg'"/>
+                  </div>
+                  <div class="f-hero-info">
+                    <span class="f-hero-badge bt-dessert">कुल्हड़ स्पेशल • Royal</span>
+                    <div class="f-hero-name">शाही फिरनी कुल्हड़ में (Shahi Phirni)</div>
+                    <div class="f-hero-desc">Slow-simmered rice pudding with saffron, kewra &amp; pistachio in earthen cup</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px;">
+                      <span class="f-hero-price">₹120</span>
+                      <span class="card-tick-badge" title="Click to inspect dish">✓</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 4 Compact Dish Rows -->
+                <div class="farmaan-dish-card" onclick="showDishByKey('matka-kulfi')">
+                  <div class="f-dish-thumb">🍨</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">केसर पिस्ता मटका कुल्फ़ी (Matka Kulfi)</div>
+                    <div class="f-dish-desc">Traditional matka kulfi loaded with saffron strands, pistachios &amp; elaichi</div>
+                  </div>
+                  <span class="f-dish-price">₹100</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('gulab-jamun')">
+                  <div class="f-dish-thumb">🟤</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">गुलाब जामुन रोयाल (Gulab Jamun 2 Pcs)</div>
+                    <div class="f-dish-desc">Warm soft khoya dumplings dipped in aromatic rose-cardamom syrup</div>
+                  </div>
+                  <span class="f-dish-price">₹90</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('gajar-halwa')">
+                  <div class="f-dish-thumb">🍯</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">गाजर का हलवा (Gajar Ka Halwa Desi Ghee)</div>
+                    <div class="f-dish-desc">Winter carrots slow-cooked in pure desi ghee, khoya &amp; roasted cashews</div>
+                  </div>
+                  <span class="f-dish-price">₹110</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <div class="farmaan-dish-card" onclick="showDishByKey('rasmalai')">
+                  <div class="f-dish-thumb">🍰</div>
+                  <div class="f-dish-info">
+                    <div class="f-dish-name">रसमलाई स्पेशल (Rasmalai 2 Pcs)</div>
+                    <div class="f-dish-desc">Spongy chenna discs steeped in chilled saffron milk with crushed nuts</div>
+                  </div>
+                  <span class="f-dish-price">₹120</span>
+                  <span class="card-tick-badge">✓</span>
+                </div>
+
+                <button class="farmaan-col-btn" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})" style="margin-top:auto;">
+                  शाही गैलरी देखें ➔
+                </button>
+              </div>
+            </div>
+
+          </div><!-- /farmaan-content-area -->
+
+        </div><!-- /farmaan-parchment-sheet -->
+
+        <!-- BOTTOM ROLLER SPINDLE -->
+        <div class="farmaan-roller bottom-roller" id="bottomRoller">
+          <!-- Left Turned Brass Finial -->
+          <div class="roller-finial left-finial">
+            <svg viewBox="0 0 100 60" class="finial-svg">
+              <ellipse cx="88" cy="30" rx="9" ry="26" fill="url(#brassGrad1)"/>
+              <rect x="74" y="10" width="14" height="40" rx="3" fill="url(#brassGrad1)"/>
+              <ellipse cx="74" cy="30" rx="7" ry="20" fill="url(#brassGrad1)"/>
+              <rect x="52" y="15" width="22" height="30" rx="3" fill="url(#brassGrad1)"/>
+              <path d="M 28 30 C 28 16, 52 14, 52 30 C 52 46, 28 44, 28 30 Z" fill="url(#brassGrad1)"/>
+              <polygon points="12,30 28,21 28,39" fill="url(#brassGrad1)"/>
+              <circle cx="10" cy="30" r="7" fill="url(#gemGrad1)"/>
+              <circle cx="9" cy="28" r="2.5" fill="#FFEAA8" opacity="0.85"/>
+            </svg>
+          </div>
+
+          <!-- Central Cylinder Bar -->
+          <div class="roller-cylinder">
+            <div class="roller-shimmer"></div>
+            <div class="roller-filigree-band"></div>
+          </div>
+
+          <!-- Right Turned Brass Finial -->
+          <div class="roller-finial right-finial">
+            <svg viewBox="0 0 100 60" class="finial-svg" style="transform:scaleX(-1);">
+              <ellipse cx="88" cy="30" rx="9" ry="26" fill="url(#brassGrad1)"/>
+              <rect x="74" y="10" width="14" height="40" rx="3" fill="url(#brassGrad1)"/>
+              <ellipse cx="74" cy="30" rx="7" ry="20" fill="url(#brassGrad1)"/>
+              <rect x="52" y="15" width="22" height="30" rx="3" fill="url(#brassGrad1)"/>
+              <path d="M 28 30 C 28 16, 52 14, 52 30 C 52 46, 28 44, 28 30 Z" fill="url(#brassGrad1)"/>
+              <polygon points="12,30 28,21 28,39" fill="url(#brassGrad1)"/>
+              <circle cx="10" cy="30" r="7" fill="url(#gemGrad1)"/>
+              <circle cx="9" cy="28" r="2.5" fill="#FFEAA8" opacity="0.85"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- ROLLED / CLOSED STATE OVERLAY -->
+        <div class="farmaan-rolled-overlay" id="farmaanRolledOverlay" onclick="unrollFarmaanFromClick()" title="Click or scroll down to unroll royal farmaan">
+          <div class="farmaan-seal-sash">
+            <div class="farmaan-wax-seal">
+              <div class="seal-crown">♛</div>
+              <div class="seal-txt">शाही मोहर</div>
+            </div>
+            <div class="farmaan-seal-label">
+              <span class="f-sub">।। श्री रसिकाय नमः ।।</span>
+              <span class="f-title">राजशाही संदेशनामा फ़रमान</span>
+              <span class="f-loc">शाही दस्तरख्वान • ओर चाकंद, गया, बिहार</span>
+            </div>
+            <button class="btn-unroll-prompt" type="button">
+              📜 शाही फ़रमान खोलें ➔
+            </button>
+            <div style="font-size:.6rem;color:rgba(250,210,119,.75);margin-top:6px;letter-spacing:.1em;text-transform:uppercase;">
+              (नीचे स्क्रोल करने पर स्वतः खुलेगा)
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /farmaan-scroll-box -->
+
+    </div><!-- /farmaan-stage -->
+
+  </div><!-- /farmaan-sticky-wrap -->
+</section>
+
+<!-- ══════════════════════════ GALLERY ══════════════════════════ -->
+<section id="gallery" class="sec">
+  <div class="g-wrap">
+    <div class="sec-header reveal">
+      <div class="pill" style="justify-content:center"><span class="crown">&#9818;</span> Visual Feast</div>
+      <h2>Royal Gallery</h2>
+      <div class="divider"><div class="gem"></div></div>
+      <p>A glimpse into our world of flavours, ambiance &amp; unforgettable moments</p>
+    </div>
+    <div class="g-grid">
+      <div class="g-item"><div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=75')"></div><div class="g-ov"><span class="g-ico">&#10010;</span></div></div>
+      <div class="g-item"><div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=700&q=75')"></div><div class="g-ov"><span class="g-ico">&#10010;</span></div></div>
+      <div class="g-item"><div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=700&q=75')"></div><div class="g-ov"><span class="g-ico">&#10010;</span></div></div>
+      <div class="g-item"><div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=900&q=75')"></div><div class="g-ov"><span class="g-ico">&#10010;</span></div></div>
+      <div class="g-item"><div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=700&q=75')"></div><div class="g-ov"><span class="g-ico">&#10010;</span></div></div>
+      <div class="g-item"><div class="g-bg" style="background-image:url('https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=700&q=75')"></div><div class="g-ov"><span class="g-ico">&#10010;</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ BOOK TABLE ══════════════════════════ -->
+<section id="book">
+  <div class="book-inner">
+    <div class="sec-header reveal">
+      <div class="pill" style="justify-content:center"><span class="crown">&#9818;</span> Make a Reservation</div>
+      <h2>Book Your Royal Table</h2>
+      <div class="divider"><div class="gem"></div></div>
+      <p>Reserve your seat and let us prepare a truly royal experience</p>
+    </div>
+    <div class="book-form reveal">
+      <form onsubmit="doBook(event)">
+        <div class="form-row">
+          <div class="fg"><label>Full Name</label><input type="text" placeholder="Your name" required/></div>
+          <div class="fg"><label>Phone</label><input type="tel" placeholder="+91 98765 43210" required/></div>
+        </div>
+        <div class="form-row">
+          <div class="fg"><label>Date</label><input type="date" required/></div>
+          <div class="fg"><label>Time</label><input type="time" required/></div>
+        </div>
+        <div class="form-row">
+          <div class="fg"><label>Guests</label>
+            <select><option>1 Guest</option><option selected>2 Guests</option><option>3 Guests</option><option>4 Guests</option><option>5–8 Guests</option><option>Large Party (8+)</option></select>
+          </div>
+          <div class="fg"><label>Occasion</label>
+            <select><option>Casual Dining</option><option>Birthday</option><option>Anniversary</option><option>Business Dinner</option><option>Family Gathering</option></select>
+          </div>
+        </div>
+        <div class="fg"><label>Special Requests</label><textarea placeholder="Dietary needs or special requests…"></textarea></div>
+        <button type="submit" class="btn-gold" style="width:100%;justify-content:center;margin-top:6px" id="bookBtn">
+          &#9818; Confirm Royal Reservation
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ CONTACT ══════════════════════════ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="c-grid">
+      <div class="reveal">
+        <div class="pill"><span class="crown">&#9818;</span> Get in Touch</div>
+        <h2 style="font-family:var(--display);font-size:1.9rem;color:var(--champ);margin-bottom:28px">We'd Love to<br/>Hear from You</h2>
+        <div class="divider" style="justify-content:flex-start;margin:0 0 32px"><div class="gem"></div><div style="flex:1;max-width:70px;height:1px;background:linear-gradient(to right,var(--gold),transparent)"></div></div>
+        <div class="c-item">
+          <div class="c-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div><div class="c-label">Address</div><div class="c-val">Royal Restaurant, Ore Chakand,<br/>Gaya, Bihar – 823001, India</div></div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon"><i class="fas fa-phone"></i></div>
+          <div><div class="c-label">Phone</div><div class="c-val">+91 98765 43210<br/>+91 87654 32109</div></div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon"><i class="fas fa-envelope"></i></div>
+          <div><div class="c-label">Email</div><div class="c-val">info@royalrestaurantgaya.in</div></div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon"><i class="fas fa-clock"></i></div>
+          <div><div class="c-label">Hours</div><div class="c-val">Mon–Fri: 11:00 AM – 10:30 PM<br/>Sat–Sun: 10:00 AM – 11:00 PM</div></div>
+        </div>
+      </div>
+      <div class="c-form reveal">
+        <h3>Send a Message</h3>
+        <form onsubmit="doContact(event)">
+          <div class="fg"><label>Name</label><input type="text" placeholder="Your full name" required/></div>
+          <div class="fg"><label>Email</label><input type="email" placeholder="you@example.com" required/></div>
+          <div class="fg"><label>Subject</label><input type="text" placeholder="How can we help?"/></div>
+          <div class="fg"><label>Message</label><textarea placeholder="Your message…" required></textarea></div>
+          <button type="submit" class="btn-gold" style="width:100%;justify-content:center" id="msgBtn">
+            <i class="fas fa-paper-plane"></i> Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ LOCATION ══════════════════════════ -->
+<section id="location">
+  <div class="sec-header reveal" style="margin-bottom:52px">
+    <div class="pill" style="justify-content:center"><span class="crown">&#9818;</span> Find Us</div>
+    <h2 style="font-family:var(--display);font-size:2.5rem;color:var(--champ)">Our Location</h2>
+    <div class="divider"><div class="gem"></div></div>
+  </div>
+  <div class="wrap">
+    <div class="loc-grid">
+      <div class="map-box reveal">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.1!2d84.9947!3d24.7955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398d42a3b7f6d6d5%3A0x21e11de65bef0ab0!2sGaya%2C%20Bihar!5e0!3m2!1sen!2sin!4v1693000000000"
+          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Royal Restaurant Location"></iframe>
+      </div>
+      <div class="loc-info reveal">
+        <div class="pill"><span class="crown">&#9818;</span> Royal Restaurant</div>
+        <h3>Ore Chakand, Gaya</h3>
+        <div class="loc-item"><span><i class="fas fa-map-pin"></i></span><p>Royal Restaurant, Ore Chakand<br/>Gaya, Bihar – 823001, India</p></div>
+        <div class="loc-item"><span><i class="fas fa-train"></i></span><p>10 min from Gaya Junction Railway Station</p></div>
+        <div class="loc-item"><span><i class="fas fa-parking"></i></span><p>Free parking for 50+ vehicles</p></div>
+        <div class="hours">
+          <div class="hi"><span class="d">Monday</span><span class="t">11am–10:30pm</span></div>
+          <div class="hi"><span class="d">Tuesday</span><span class="t">11am–10:30pm</span></div>
+          <div class="hi"><span class="d">Wednesday</span><span class="t">11am–10:30pm</span></div>
+          <div class="hi"><span class="d">Thursday</span><span class="t">11am–10:30pm</span></div>
+          <div class="hi"><span class="d">Friday</span><span class="t">11am–11pm</span></div>
+          <div class="hi"><span class="d">Saturday</span><span class="t">10am–11pm</span></div>
+          <div class="hi"><span class="d">Sunday</span><span class="t">10am–11pm</span></div>
+          <div class="hi" style="color:var(--gold)"><span class="d" style="color:var(--gold)">Festivals</span><span class="t">Till Midnight</span></div>
+        </div>
+        <a href="https://maps.google.com?q=Gaya+Bihar" target="_blank" class="btn-gold" style="margin-top:24px;display:inline-flex">
+          <i class="fas fa-directions"></i> Get Directions
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ REVIEWS ══════════════════════════ -->
+<section id="reviews">
+  <div class="wrap">
+    <div class="sec-header reveal">
+      <div class="pill" style="justify-content:center"><span class="crown">&#9818;</span> Guest Voices</div>
+      <h2>What Our Royals Say</h2>
+      <div class="divider"><div class="gem"></div></div>
+      <p>Genuine experiences from valued guests across India</p>
+    </div>
+    <div class="rv-grid">
+
+      <div class="rv-card reveal">
+        <div class="rv-quote">"</div>
+        <div class="rv-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="rv-text">The Dum Biryani was absolutely divine! Royal Restaurant in Gaya gave me the most authentic Mughal experience. The ambiance, the service, the food — everything is 10 on 10.</p>
+        <div class="rv-author"><div class="rv-av">R</div><div><div class="rv-name">Rajesh Kumar</div><div class="rv-loc">&#128205; Patna, Bihar</div></div></div>
+        <div class="rv-plat">Google · Verified</div>
+      </div>
+
+      <div class="rv-card reveal">
+        <div class="rv-quote">"</div>
+        <div class="rv-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="rv-text">Celebrated my anniversary here and it was beyond magical. The candlelit table, the saffron desserts, the warm staff — this place truly lives up to its royal name. Will definitely return!</p>
+        <div class="rv-author"><div class="rv-av">P</div><div><div class="rv-name">Priya Sharma</div><div class="rv-loc">&#128205; Varanasi, UP</div></div></div>
+        <div class="rv-plat">TripAdvisor · Verified</div>
+      </div>
+
+      <div class="rv-card reveal">
+        <div class="rv-quote">"</div>
+        <div class="rv-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="rv-text">As a food blogger I've visited hundreds of restaurants. Royal Restaurant stands in a league of its own. The Seekh Kebabs are heavenly and the Bihari Mutton Curry is unforgettable.</p>
+        <div class="rv-author"><div class="rv-av">A</div><div><div class="rv-name">Arjun Mehta</div><div class="rv-loc">&#128205; New Delhi</div></div></div>
+        <div class="rv-plat">Zomato · Verified</div>
+      </div>
+
+      <div class="rv-card reveal">
+        <div class="rv-quote">"</div>
+        <div class="rv-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="rv-text">Visited during Chhath festival and the special menu was out of this world. The Maharaja-inspired interiors made us feel like actual royalty. Highly recommended to everyone!</p>
+        <div class="rv-author"><div class="rv-av">S</div><div><div class="rv-name">Sunita Devi</div><div class="rv-loc">&#128205; Gaya, Bihar</div></div></div>
+        <div class="rv-plat">Google · Verified</div>
+      </div>
+
+      <div class="rv-card reveal">
+        <div class="rv-quote">"</div>
+        <div class="rv-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+        <p class="rv-text">The Paneer Tikka Maharaja and Kahwa Gold tea combo was exceptional. Service was attentive and swift. One of the best dining experiences in Bihar without any doubt.</p>
+        <div class="rv-author"><div class="rv-av">M</div><div><div class="rv-name">Mohammed Ali</div><div class="rv-loc">&#128205; Ranchi, Jharkhand</div></div></div>
+        <div class="rv-plat">Swiggy · Verified</div>
+      </div>
+
+      <div class="rv-card reveal">
+        <div class="rv-quote">"</div>
+        <div class="rv-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="rv-text">Brought my corporate team for a business dinner — 12 people. The private dining setup was magnificent. Royal Dum Biryani for the entire table was a masterpiece. Clients were truly impressed!</p>
+        <div class="rv-author"><div class="rv-av">V</div><div><div class="rv-name">Vikram Singh</div><div class="rv-loc">&#128205; Mumbai</div></div></div>
+        <div class="rv-plat">Google · Verified</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ FOOTER ══════════════════════════ -->
+<footer>
+  <!-- Social widgets center of footer -->
+  <div class="social-section">
+    <div class="social-label"><span class="crown">&#9818;</span> Follow the Royal Journey <span class="crown">&#9818;</span></div>
+    <div class="soc-widgets">
+      <a href="https://instagram.com" target="_blank" class="sw ig">
+        <div class="sw-ico"><i class="fab fa-instagram" style="color:#fff"></i></div>
+        <div><div class="sw-pname">Instagram</div><div class="sw-handle">@royalrestaurantgaya</div><div class="sw-follow">Follow Us &#8594;</div></div>
+      </a>
+      <a href="https://facebook.com" target="_blank" class="sw fb">
+        <div class="sw-ico"><i class="fab fa-facebook-f" style="color:#fff"></i></div>
+        <div><div class="sw-pname">Facebook</div><div class="sw-handle">Royal Restaurant Gaya</div><div class="sw-follow">Like Page &#8594;</div></div>
+      </a>
+      <a href="https://youtube.com" target="_blank" class="sw yt">
+        <div class="sw-ico"><i class="fab fa-youtube" style="color:#fff"></i></div>
+        <div><div class="sw-pname">YouTube</div><div class="sw-handle">Royal Restaurant Gaya</div><div class="sw-follow">Subscribe &#8594;</div></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="ft-grid">
+    <div class="ft-brand">
+      <div class="bn">&#9818; ROYAL RESTAURANT</div>
+      <p>Nestled in the heart of Ore Chakand, Gaya, Bihar — a legacy of flavour, royalty, and warmth for over 20 years.</p>
+      <div class="pill" style="width:fit-content"><i class="fas fa-map-marker-alt"></i> &nbsp;Ore Chakand, Gaya, Bihar</div>
+    </div>
+    <div>
+      <div class="ft-head">Quick Links</div>
+      <ul class="ft-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#menu">Our Menu</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#book">Book a Table</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#location">Location</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="ft-head">Our Menu</div>
+      <ul class="ft-links">
+        <li><a href="#menu">Starters &amp; Snacks</a></li>
+        <li><a href="#menu">Royal Biryani</a></li>
+        <li><a href="#menu">Main Course</a></li>
+        <li><a href="#menu">Royal Desserts</a></li>
+        <li><a href="#menu">Beverages</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="ft-head">Contact Us</div>
+      <div class="ft-ci"><i class="fas fa-map-marker-alt" style="color:var(--gold);margin-top:2px"></i><span>Ore Chakand, Gaya, Bihar – 823001</span></div>
+      <div class="ft-ci"><i class="fas fa-phone" style="color:var(--gold);margin-top:2px"></i><span>+91 98765 43210</span></div>
+      <div class="ft-ci"><i class="fas fa-envelope" style="color:var(--gold);margin-top:2px"></i><span>info@royalrestaurantgaya.in</span></div>
+      <div class="ft-ci"><i class="fas fa-clock" style="color:var(--gold);margin-top:2px"></i><span>Mon–Fri: 11am–10:30pm<br/>Sat–Sun: 10am–11pm</span></div>
+    </div>
+  </div>
+
+  <div class="ft-bottom">
+    <p>&#169; 2025 <span class="gld">Royal Restaurant</span>. All rights reserved. Ore Chakand, Gaya, Bihar.</p>
+    <p>&#9818; Crafted with <span class="gld">&#9829;</span> in Bihar, India</p>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<a href="#hero" id="btt"><i class="fas fa-chevron-up"></i></a>
+
+<!-- ══════════════════════════ DISH POPUP MODAL ══════════════════════════ -->
+<div class="dish-modal-overlay" id="dishModalOverlay" onclick="closeDishModalOnBackdrop(event)">
+  <div class="dish-modal-card" id="dishModalCard">
+    <button class="dish-modal-close" onclick="closeDishModal()" title="Close details">&times;</button>
+    
+    <div class="dish-modal-img-wrap">
+      <div class="dish-modal-ribbon" id="modalDishBadge">Chef's Choice</div>
+      <span class="dish-modal-steam">♨️</span>
+      <img id="modalDishImg" class="dish-modal-img" src="paneer_lababdar.jpg" alt="Dish Preview" onerror="this.src='images/paneer-thali.jpg'"/>
+    </div>
+
+    <div class="dish-modal-body">
+      <div class="dish-modal-header">
+        <div class="dish-modal-title" id="modalDishTitle">Paneer Lababdar</div>
+        <div class="dish-modal-price" id="modalDishPrice">₹260</div>
+      </div>
+
+      <div class="dish-modal-subrow">
+        <span class="dish-modal-stars" id="modalDishStars">★★★★★ 4.9</span>
+        <span class="b-tag-pill bt-chef" id="modalDishPill">Bestseller</span>
+      </div>
+
+      <div class="dish-modal-desc" id="modalDishDesc">
+        Rich creamy tomato gravy with golden cottage cheese cubes, slow-cooked in butter with roasted fenugreek leaves.
+      </div>
+
+      <div class="dish-modal-specs">
+        <div class="spec-item">
+          <div class="spec-icon">⏱️</div>
+          <div class="spec-label">Prep Time</div>
+          <div class="spec-val" id="modalDishTime">15-20 Min</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-icon">🌶️</div>
+          <div class="spec-label">Spice Level</div>
+          <div class="spec-val" id="modalDishSpice">Royal Mild</div>
+        </div>
+        <div class="spec-item">
+          <div class="spec-icon">🍽️</div>
+          <div class="spec-label">Portion</div>
+          <div class="spec-val" id="modalDishPortion">Serves 1-2</div>
+        </div>
+      </div>
+
+      <div class="dish-modal-actions">
+        <button class="btn-modal-order" onclick="bookTableForDish()">
+          <i class="fas fa-utensils"></i> Reserve Table for This Dish
+        </button>
+        <button class="btn-modal-close-text" onclick="closeDishModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ SCRIPTS ══════════════════════════ -->
+<script>
+// Loader — hides reliably after 1.6s regardless of network
+window.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    var l = document.getElementById('loader');
+    l.classList.add('gone');
+    setTimeout(function(){ try{l.remove()}catch(e){} }, 750);
+    initReveal();
+  }, 1600);
+});
+
+// Navbar + back-to-top elements
+var nav = document.getElementById('nav');
+var btt = document.getElementById('btt');
+
+// Mobile nav
+function openMob() { document.getElementById('mob-nav').classList.add('open'); }
+function closeMob() { document.getElementById('mob-nav').classList.remove('open'); }
+
+// Intersection Observer reveal
+function initReveal() {
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+}
+
+// ══════════════════════════ RAJSHAHI SANDESHANAMA 3-PAGE CONTROLLER ══════════════════════════
+var royalMenuDishes = {
+  // Chapter 1: Veg Starters
+  'paneer-tikka': {
+    name: 'पनीर टिक्का अंगारा (Paneer Tikka Angara)',
+    price: '₹240',
+    desc: 'Charcoal-grilled fresh cottage cheese cubes infused in Kashmiri saffron curd, bell peppers, mint glaze & roasted cumin.',
+    rating: '4.9',
+    tag: 'bt-chef',
+    tagText: 'Chef\'s Pride',
+    prepTime: '15 Min',
+    spiceLevel: '🌶️ Medium Spice',
+    portion: 'Serves 2',
+    img: 'paneer_lababdar.jpg',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'hara-bhara': {
+    name: 'हरा भरा कबाब (Hara Bhara Kebab Royale)',
+    price: '₹190',
+    desc: 'Pan-seared spinach, sweet green pea & fresh cottage cheese patties spiked with ginger, royal mace & crushed cashews.',
+    rating: '4.8',
+    tag: 'bt-veg',
+    tagText: 'Veg Royale',
+    prepTime: '12 Min',
+    spiceLevel: '👑 Mild Royal',
+    portion: '6 Pcs • Serves 2',
+    img: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'crispy-corn': {
+    name: 'क्रिस्पी कॉर्न चाट (Crispy Corn Chatpata)',
+    price: '₹160',
+    desc: 'Golden crisp sweet corn tossed with freshly crushed black pepper, lime juice, pomegranate seeds & Himalayan pink salt.',
+    rating: '4.7',
+    tag: 'bt-veg',
+    tagText: 'Crunchy Delight',
+    prepTime: '10 Min',
+    spiceLevel: '🍋 Tangy Zest',
+    portion: 'Serves 1-2',
+    img: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'malai-broccoli': {
+    name: 'मलाई ब्रोकोली (Malai Broccoli Tandoori)',
+    price: '₹220',
+    desc: 'Tender broccoli florets marinated in cardamom scented rich clotted cream, processed cheese & char-roasted on tandoor.',
+    rating: '4.9',
+    tag: 'bt-chef',
+    tagText: 'Royal Starter',
+    prepTime: '15 Min',
+    spiceLevel: '👑 Mild Creamy',
+    portion: 'Serves 2',
+    img: 'https://images.unsplash.com/photo-1505253758473-96b3015f240a?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'dahi-sholay': {
+    name: 'दही के शोले (Dahi Ke Sholay Crisp)',
+    price: '₹180',
+    desc: 'Crunchy golden bread wraps bursting with hung curd, finely chopped bell peppers, green chillies & fresh coriander.',
+    rating: '4.8',
+    tag: 'bt-veg',
+    tagText: 'Hot Pockets',
+    prepTime: '12 Min',
+    spiceLevel: '🌶️ Medium Spice',
+    portion: '4 Pcs • Serves 2',
+    img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+
+  // Chapter 1: Non-Veg Starters
+  'murgh-malai': {
+    name: 'मुर्ग मलाई टिक्का (Murgh Malai Tikka)',
+    price: '₹290',
+    desc: 'Melt-in-the-mouth boneless chicken chunks steeped in cashew cream, royal saffron, white pepper & roasted over charcoal embers.',
+    rating: '5.0',
+    tag: 'bt-chef',
+    tagText: 'Maharaja Choice',
+    prepTime: '18 Min',
+    spiceLevel: '👑 Mild Creamy',
+    portion: '6 Pcs • Serves 2',
+    img: 'images/chicken-pop.jpg',
+    fallbackImg: 'chicken_leg.jpg'
+  },
+  'galouti-kebab': {
+    name: 'गलौटी कबाब (Galouti Kebab Royale)',
+    price: '₹340',
+    desc: 'Silken mutton mince patties blended with 32 secret Lucknowi spices, smoked on charcoal and served on mini Mughlai parathas.',
+    rating: '4.9',
+    tag: 'bt-nonveg',
+    tagText: 'Nawabi Heritage',
+    prepTime: '20 Min',
+    spiceLevel: '🌶️ Aromatic Spice',
+    portion: '4 Pcs • Serves 2',
+    img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80',
+    fallbackImg: 'chicken_leg.jpg'
+  },
+  'mutton-seekh': {
+    name: 'मटन सीक कबाब (Mutton Seekh Kebab)',
+    price: '₹320',
+    desc: 'Spiced tender minced lamb skewered with roasted onions, mint leaves, royal shahi jeera and grilled to smoky perfection.',
+    rating: '4.8',
+    tag: 'bt-nonveg',
+    tagText: 'Smoky Charcoal',
+    prepTime: '18 Min',
+    spiceLevel: '🌶️ Medium Hot',
+    portion: '4 Skewers • Serves 2',
+    img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=500&q=80',
+    fallbackImg: 'leg piece.png'
+  },
+  'tandoori-tangdi': {
+    name: 'तंदूरी टांगड़ी कबाब (Tandoori Tangdi Kebab)',
+    price: '₹260',
+    desc: 'Juicy chicken drumsticks marinated in cold-pressed mustard oil, hung curd, crushed ginger-garlic & degi mirch.',
+    rating: '4.9',
+    tag: 'bt-nonveg',
+    tagText: 'Tandoor Hit',
+    prepTime: '20 Min',
+    spiceLevel: '🌶️ Fiery Hot',
+    portion: '2 Legs • Serves 1-2',
+    img: 'chicken_leg.jpg',
+    fallbackImg: 'images/chicken-pop.jpg'
+  },
+  'amritsari-fish': {
+    name: 'अमृतसरी फ़िश फ़्राई (Amritsari Fish Fry)',
+    price: '₹280',
+    desc: 'Crispy carom-seed spiced gram flour batter coated fish fillets served with lachha onions & fresh mint chutney.',
+    rating: '4.8',
+    tag: 'bt-nonveg',
+    tagText: 'Crispy Catch',
+    prepTime: '14 Min',
+    spiceLevel: '🍋 Crisp Tangy',
+    portion: 'Serves 2',
+    img: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=500&q=80',
+    fallbackImg: 'images/chicken-pop.jpg'
+  },
+
+  // Chapter 2: Maharaja Thali & Regional
+  'maharaja-thali': {
+    name: 'महाराजा शाही थाली (The Imperial Grand Thali)',
+    price: '₹480',
+    desc: 'The ultimate royal feast: Bukhara Dal Makhani, Shahi Paneer Lababdar, Champaran Meat/Kofta, Basmati Jeera Rice, 2 Butter Naan, Shahi Phirni in Kulhad, Boondi Raita, Roasted Papad, Salad & Royal Mukhwas.',
+    rating: '5.0',
+    tag: 'bt-chef',
+    tagText: 'Signature Royal Feast',
+    prepTime: '20 Min',
+    spiceLevel: '👑 Royal Balance',
+    portion: 'Grand Feast • Serves 1-2',
+    img: 'images/paneer-thali.jpg',
+    fallbackImg: 'paneer_lababdar.jpg'
+  },
+  'champaran-handi': {
+    name: 'चंपारण आहुना मटन (Champaran Ahuna Mutton)',
+    price: '₹380',
+    desc: 'Authentic Bihar specialty: Mutton slow-cooked in a sealed earthen clay pot (Ahuna) over wood embers with mustard oil and whole garlic bulbs.',
+    rating: '5.0',
+    tag: 'bt-nonveg',
+    tagText: 'Bihari Crown',
+    prepTime: '35 Min Slow Dum',
+    spiceLevel: '🌶️ Fiery & Rustic',
+    portion: 'Earthen Handi • Serves 2',
+    img: 'chicken_leg.jpg',
+    fallbackImg: 'images/chicken-pop.jpg'
+  },
+  'litti-chokha': {
+    name: 'शाही लिट्टी चोखा (Bihari Litti Chokha Royale)',
+    price: '₹220',
+    desc: 'Coal-roasted whole wheat balls stuffed with spiced roasted gram sattu, immersed in steaming desi ghee, paired with smoky baingan bharta & tomato salsa.',
+    rating: '4.9',
+    tag: 'bt-veg',
+    tagText: 'Bihari Pride',
+    prepTime: '15 Min',
+    spiceLevel: '🌶️ Traditional Spiced',
+    portion: '2 Big Littis • Serves 1-2',
+    img: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'shahi-kofta': {
+    name: 'शाही मलाई कोफ़्ता (Shahi Malai Kofta)',
+    price: '₹250',
+    desc: 'Velvety dumplings of fresh paneer & khoya stuffed with raisins and pistachios, floating in a smooth saffron-cashew gravy.',
+    rating: '4.8',
+    tag: 'bt-veg',
+    tagText: 'Rich Creamy',
+    prepTime: '15 Min',
+    spiceLevel: '👑 Sweet & Mild',
+    portion: 'Serves 2',
+    img: 'https://images.unsplash.com/photo-1505253758473-96b3015f240a?w=500&q=80',
+    fallbackImg: 'paneer_lababdar.jpg'
+  },
+  'dal-makhani': {
+    name: 'दाल मखनी बुखारा (Dal Makhani Bukhara 24h)',
+    price: '₹210',
+    desc: 'Black urad lentils and kidney beans slow-simmered for 24 continuous hours on tandoor embers, finished with pure churned white butter.',
+    rating: '4.9',
+    tag: 'bt-chef',
+    tagText: '24h Simmered',
+    prepTime: 'Ready to Serve',
+    spiceLevel: '👑 Mild Buttery',
+    portion: 'Serves 2',
+    img: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80',
+    fallbackImg: 'paneer_lababdar.jpg'
+  },
+
+  // Chapter 2: Royal Curries & Biryani
+  'dum-biryani': {
+    name: 'अवधी दम मुर्ग बिरयानी (Awadhi Dum Murgh Biryani)',
+    price: '₹320',
+    desc: 'Royal aged basmati rice layered with tender saffron chicken, caramelized onions, fresh mint leaves & dum-sealed with dough in earthen handi.',
+    rating: '5.0',
+    tag: 'bt-chef',
+    tagText: 'Dum Pukht',
+    prepTime: '22 Min',
+    spiceLevel: '🌶️ Aromatic Royal',
+    portion: 'Handi • Serves 2',
+    img: 'images/chicken-pop.jpg',
+    fallbackImg: 'chicken_leg.jpg'
+  },
+  'paneer-lababdar': {
+    name: 'पनीर लबाबदार स्पेशल (Paneer Lababdar)',
+    price: '₹260',
+    desc: 'Farm-fresh cottage cheese cubes bathed in a velvety tomato, melon seed and butter gravy with crushed roasted fenugreek leaves.',
+    rating: '4.9',
+    tag: 'bt-veg',
+    tagText: 'Chef\'s Pick',
+    prepTime: '15 Min',
+    spiceLevel: '👑 Mild Royal',
+    portion: 'Serves 2',
+    img: 'paneer_lababdar.jpg',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'bihari-mutton': {
+    name: 'बिहारी मटन करी (Bihari Mutton Curry Handi)',
+    price: '₹360',
+    desc: 'Rustic brass-handi lamb curry slow-cooked with whole red chillies, mustard oil, crushed coriander seeds and caramelized shallots.',
+    rating: '4.9',
+    tag: 'bt-nonveg',
+    tagText: 'Handi Specialty',
+    prepTime: '25 Min',
+    spiceLevel: '🌶️ Fiery Hot',
+    portion: 'Serves 2',
+    img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80',
+    fallbackImg: 'chicken_leg.jpg'
+  },
+  'butter-chicken': {
+    name: 'बटर चिकन असल-ए-शाही (Butter Chicken Royale)',
+    price: '₹310',
+    desc: 'Boneless tandoori chicken cooked in smoky charcoal tandoor and simmered in an indulgent satin tomato, cashew butter gravy.',
+    rating: '4.9',
+    tag: 'bt-nonveg',
+    tagText: 'Bestseller',
+    prepTime: '18 Min',
+    spiceLevel: '👑 Mild Creamy',
+    portion: 'Serves 2',
+    img: 'chicken_leg.jpg',
+    fallbackImg: 'images/chicken-pop.jpg'
+  },
+  'veg-biryani': {
+    name: 'निज़ामी वेज दम बिरयानी (Nizami Veg Dum Biryani)',
+    price: '₹230',
+    desc: 'Garden fresh seasonal vegetables, paneer cubes, saffron basmati rice & fragrant Kewra water sealed in an earthen pot with curd raita.',
+    rating: '4.8',
+    tag: 'bt-veg',
+    tagText: 'Royal Veg Dum',
+    prepTime: '20 Min',
+    spiceLevel: '🌶️ Aromatic Medium',
+    portion: 'Handi • Serves 2',
+    img: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+
+  // Chapter 3: Royal Drinks
+  'mango-lassi': {
+    name: 'रॉयल मैंगो लस्सी (Royal Mango Lassi)',
+    price: '₹90',
+    desc: 'Creamy hand-whipped sweet yogurt blended with luscious Alphonso mango pulp, Kashmiri saffron threads & toasted almond slivers.',
+    rating: '5.0',
+    tag: 'bt-drink',
+    tagText: 'Chilled Star',
+    prepTime: '5 Min',
+    spiceLevel: '🥭 Sweet & Cold',
+    portion: '350ml Glass',
+    img: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'kahwa-gold': {
+    name: 'कहलवा गोल्ड चाय (Kahwa Gold Kashmiri Tea)',
+    price: '₹70',
+    desc: 'Steaming green tea brewed in a traditional samovar with pure Kashmiri saffron strands, crushed green cardamom & sliced almonds.',
+    rating: '4.9',
+    tag: 'bt-chef',
+    tagText: 'Pure Saffron',
+    prepTime: '8 Min',
+    spiceLevel: '☕ Hot & Fragrant',
+    portion: 'Royal Cup',
+    img: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'rose-falooda': {
+    name: 'गुलाब शर्बत फ़ालूदा (Rose Sharbat Falooda)',
+    price: '₹80',
+    desc: 'Fragrant Damascus rose milk with chilled basil sabja seeds, silky vermicelli noodles & a generous crown of royal kulfi.',
+    rating: '4.8',
+    tag: 'bt-drink',
+    tagText: 'Chilled Dessert Drink',
+    prepTime: '6 Min',
+    spiceLevel: '🌹 Sweet & Floral',
+    portion: 'Tall Glass',
+    img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'masala-nimbu': {
+    name: 'शाही मसाला नींबू सोडा (Shahi Masala Nimbu Soda)',
+    price: '₹50',
+    desc: 'Freshly squeezed lemon juice infused with roasted black cumin, rock salt, fresh garden mint & bubbly chilled sparkling soda.',
+    rating: '4.7',
+    tag: 'bt-drink',
+    tagText: 'Zesty Fizz',
+    prepTime: '4 Min',
+    spiceLevel: '🍋 Crisp & Tangy',
+    portion: '300ml Glass',
+    img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'kesar-badam': {
+    name: 'केसर बादाम शाही दूध (Kesar Badam Shahi Doodh)',
+    price: '₹80',
+    desc: 'Slow-boiled whole milk enriched with California almond paste, golden saffron threads, green cardamom & crushed pistachios.',
+    rating: '4.8',
+    tag: 'bt-drink',
+    tagText: 'Nourishing Warm',
+    prepTime: '8 Min',
+    spiceLevel: '🥛 Warm & Sweet',
+    portion: 'Clay Kulhad',
+    img: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+
+  // Chapter 3: Royal Desserts
+  'shahi-phirni': {
+    name: 'शाही फिरनी कुल्हड़ में (Shahi Phirni in Kulhad)',
+    price: '₹120',
+    desc: 'Traditional slow-cooked ground basmati rice pudding scented with kewra water and saffron, set in porous earthen cups and garnished with edible silver varq.',
+    rating: '4.9',
+    tag: 'bt-chef',
+    tagText: 'Kulhad Royale',
+    prepTime: 'Chilled',
+    spiceLevel: '🍮 Chilled Royal Sweet',
+    portion: 'Clay Kulhad • 1 Serving',
+    img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'matka-kulfi': {
+    name: 'केसर पिस्ता मटका कुल्फ़ी (Kesar Pista Matka Kulfi)',
+    price: '₹100',
+    desc: 'Dense, caramelized malai kulfi slow-reduced over hours with saffron strands, whole green pistachios & cardamom in authentic earthen pot.',
+    rating: '5.0',
+    tag: 'bt-dessert',
+    tagText: 'Chilled Matka',
+    prepTime: 'Chilled',
+    spiceLevel: '🍨 Frozen Rich',
+    portion: '1 Earthen Matka',
+    img: 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'gulab-jamun': {
+    name: 'गुलाब जामुन रोयाल (Gulab Jamun Royale 2 Pcs)',
+    price: '₹90',
+    desc: 'Melt-in-mouth milk mawa dumplings golden fried in pure desi ghee and steeped in fragrant green cardamom and rose water sugar syrup.',
+    rating: '4.8',
+    tag: 'bt-dessert',
+    tagText: 'Warm Desi Ghee',
+    prepTime: 'Warm',
+    spiceLevel: '🟤 Sweet Nectar',
+    portion: '2 Big Pieces',
+    img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'gajar-halwa': {
+    name: 'गाजर का हलवा (Gajar Ka Halwa Desi Ghee)',
+    price: '₹110',
+    desc: 'Grated winter red carrots slow-simmered in whole milk, pure desi ghee and khoya, generously laden with golden fried cashews & raisins.',
+    rating: '4.8',
+    tag: 'bt-dessert',
+    tagText: 'Desi Ghee Classic',
+    prepTime: 'Warm',
+    spiceLevel: '🍯 Rich Warm Sweet',
+    portion: 'Serves 1',
+    img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  },
+  'rasmalai': {
+    name: 'रसमलाई स्पेशल (Rasmalai Special 2 Pcs)',
+    price: '₹120',
+    desc: 'Delicate spongy chenna discs steeped in chilled condensed saffron milk, infused with crushed green cardamom and toasted pistachio bits.',
+    rating: '4.9',
+    tag: 'bt-dessert',
+    tagText: 'Royal Classic',
+    prepTime: 'Chilled',
+    spiceLevel: '🍰 Delicate Sweet',
+    portion: '2 Pieces',
+    img: 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=500&q=80',
+    fallbackImg: 'images/paneer-thali.jpg'
+  }
+};
+
+// ══════════════════════════ 3D FARMAAN SCROLL & CHAPTER CONTROLLER ══════════════════════════
+var farmaanCurrentChapter = 1;
+var isFarmaanUnrolled = false; // Starts CLOSED by default as requested!
+
+function showDishByKey(key) {
+  var dish = royalMenuDishes[key];
+  if (dish) {
+    openDishModal(dish);
+  }
+}
+
+function setFarmaanActiveChapter(chapterNum) {
+  farmaanCurrentChapter = chapterNum;
+
+  [1, 2, 3].forEach(function(c) {
+    var chapterEl = document.getElementById('farmaanChapter' + c);
+    var pill = document.getElementById('pillChapter' + c);
+
+    if (chapterEl) {
+      if (c === chapterNum) {
+        chapterEl.classList.add('active');
+      } else {
+        chapterEl.classList.remove('active');
+      }
+    }
+
+    if (pill) {
+      if (c === chapterNum) {
+        pill.classList.add('active');
+      } else {
+        pill.classList.remove('active');
+      }
+    }
+  });
+}
+
+function triggerFarmaanUnroll(withSwing) {
+  var scrollBox = document.getElementById('farmaanScrollBox');
+  if (!scrollBox) return;
+
+  scrollBox.classList.remove('is-rolled');
+
+  if (withSwing) {
+    scrollBox.classList.remove('unrolling-swing');
+    void scrollBox.offsetWidth; // force DOM reflow to replay swing
+    scrollBox.classList.add('unrolling-swing');
+    setTimeout(function() {
+      if (scrollBox) scrollBox.classList.remove('unrolling-swing');
+    }, 900);
+  }
+
+  isFarmaanUnrolled = true;
+
+  var rollBtnText = document.getElementById('rollBtnText');
+  var rollBtnIcon = document.getElementById('rollBtnIcon');
+  if (rollBtnText) rollBtnText.textContent = 'फ़रमान लपेटें';
+  if (rollBtnIcon) rollBtnIcon.textContent = '📜';
+}
+
+function triggerFarmaanRoll() {
+  var scrollBox = document.getElementById('farmaanScrollBox');
+  if (!scrollBox) return;
+
+  scrollBox.classList.add('is-rolled');
+  scrollBox.classList.remove('unrolling-swing');
+  isFarmaanUnrolled = false;
+
+  var rollBtnText = document.getElementById('rollBtnText');
+  var rollBtnIcon = document.getElementById('rollBtnIcon');
+  if (rollBtnText) rollBtnText.textContent = 'फ़रमान खोलें';
+  if (rollBtnIcon) rollBtnIcon.textContent = '📜';
+}
+
+// ══════════════════════════ ULTRA-PERFORMANT SCROLL CACHE & CONTROLLER ══════════════════════════
+var menuSec = document.getElementById('menu');
+var menuTopCache = 0;
+var menuHeightCache = 0;
+
+function refreshMenuMetrics() {
+  if (menuSec) {
+    var rect = menuSec.getBoundingClientRect();
+    menuTopCache = (window.pageYOffset || document.documentElement.scrollTop) + rect.top;
+    menuHeightCache = menuSec.offsetHeight;
+  }
+}
+window.addEventListener('resize', refreshMenuMetrics, { passive: true });
+window.addEventListener('DOMContentLoaded', refreshMenuMetrics);
+setTimeout(refreshMenuMetrics, 400);
+setTimeout(refreshMenuMetrics, 1800);
+
+function updateFarmaanScroll() {
+  if (!menuSec) return;
+  if (!menuHeightCache) refreshMenuMetrics();
+
+  var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+  var windowHeight = window.innerHeight;
+  var totalScroll = menuHeightCache - windowHeight;
+  if (totalScroll <= 0) return;
+
+  var currentScroll = scrollY - menuTopCache;
+  var progress = currentScroll / totalScroll;
+
+  // Closed zone: before user reaches menu
+  if (progress < 0.03) {
+    if (isFarmaanUnrolled) {
+      triggerFarmaanRoll();
+    }
+    return;
+  }
+
+  // Unrolling zone (progress >= 0.03): Smoothly slide unroll with royal swing!
+  if (progress >= 0.03 && !isFarmaanUnrolled) {
+    triggerFarmaanUnroll(true);
+  }
+
+  // Chapter 1: 0.03 to 0.38 (Starters)
+  // Chapter 2: 0.38 to 0.68 (Maharaja Thali & Mains)
+  // Chapter 3: 0.68 to 0.98 (Drinks & Desserts)
+  var targetChapter = 1;
+  if (progress >= 0.68) {
+    targetChapter = 3;
+  } else if (progress >= 0.38) {
+    targetChapter = 2;
+  } else {
+    targetChapter = 1;
+  }
+
+  if (targetChapter !== farmaanCurrentChapter) {
+    setFarmaanActiveChapter(targetChapter);
+  }
+}
+
+function goToFarmaanChapter(chapNum) {
+  if (!menuSec) return;
+  if (!menuHeightCache) refreshMenuMetrics();
+
+  triggerFarmaanUnroll(true);
+  setFarmaanActiveChapter(chapNum);
+
+  var windowHeight = window.innerHeight;
+  var totalScroll = menuHeightCache - windowHeight;
+
+  var progressTarget = 0.16;
+  if (chapNum === 2) progressTarget = 0.52;
+  if (chapNum === 3) progressTarget = 0.82;
+
+  window.scrollTo({
+    top: menuTopCache + (totalScroll * progressTarget),
+    behavior: 'smooth'
+  });
+}
+
+function unrollFarmaanFromClick() {
+  goToFarmaanChapter(1);
+}
+
+function toggleFarmaanRollManual() {
+  if (!menuSec) return;
+  if (!menuHeightCache) refreshMenuMetrics();
+
+  if (isFarmaanUnrolled) {
+    triggerFarmaanRoll();
+    window.scrollTo({ top: menuTopCache, behavior: 'smooth' });
+  } else {
+    goToFarmaanChapter(1);
+  }
+}
+
+// ══════════════════════════ UNIFIED 60-120 FPS SCROLL TICKER (rAF) ══════════════════════════
+var isScrollScheduled = false;
+window.addEventListener('scroll', function() {
+  if (!isScrollScheduled) {
+    window.requestAnimationFrame(function() {
+      var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      if (nav) nav.classList.toggle('scrolled', scrollY > 55);
+      if (btt) btt.classList.toggle('show', scrollY > 300);
+      updateFarmaanScroll();
+      isScrollScheduled = false;
+    });
+    isScrollScheduled = true;
+  }
+}, { passive: true });
+
+// ══════════════════════════ DISH POPUP MODAL FUNCTIONS ══════════════════════════
+var activeModalDish = null;
+
+function openDishModal(item) {
+  if (!item) return;
+  activeModalDish = item;
+
+  var titleEl = document.getElementById('modalDishTitle');
+  var priceEl = document.getElementById('modalDishPrice');
+  var descEl = document.getElementById('modalDishDesc');
+  var imgEl = document.getElementById('modalDishImg');
+  var starsEl = document.getElementById('modalDishStars');
+  var badgeEl = document.getElementById('modalDishBadge');
+  var pillEl = document.getElementById('modalDishPill');
+  var overlay = document.getElementById('dishModalOverlay');
+  var timeEl = document.getElementById('modalDishTime');
+  var spiceEl = document.getElementById('modalDishSpice');
+  var portionEl = document.getElementById('modalDishPortion');
+
+  if (titleEl) titleEl.textContent = item.name;
+  if (priceEl) priceEl.textContent = item.price;
+  if (descEl) descEl.textContent = item.desc;
+  if (starsEl) starsEl.textContent = '★★★★★ ' + (item.rating || '4.9');
+  if (badgeEl) badgeEl.textContent = item.tagText || 'Royal Specialty';
+  if (pillEl) {
+    pillEl.textContent = item.tagText || 'Special';
+    pillEl.className = 'b-tag-pill ' + (item.tag || 'bt-chef');
+  }
+
+  // Set customized culinary meta
+  if (timeEl) timeEl.textContent = item.prepTime || '15-20 Min';
+  if (spiceEl) spiceEl.textContent = item.spiceLevel || (item.tag === 'bt-nonveg' || item.tag === 'bt-chinese' ? '🌶️ Fiery Hot' : '👑 Mild Royal');
+  if (portionEl) portionEl.textContent = item.portion || 'Serves 1-2';
+
+  if (imgEl) {
+    imgEl.src = item.img || item.fallbackImg;
+    imgEl.onerror = function() {
+      if (this.src !== item.fallbackImg) {
+        this.src = item.fallbackImg;
+      }
+    };
+  }
+
+  if (overlay) {
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeDishModal() {
+  var overlay = document.getElementById('dishModalOverlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+function closeDishModalOnBackdrop(e) {
+  if (e.target.id === 'dishModalOverlay') {
+    closeDishModal();
+  }
+}
+
+function bookTableForDish() {
+  var dishName = activeModalDish ? activeModalDish.name : '';
+  closeDishModal();
+
+  var noteField = document.querySelector('#book textarea');
+  if (noteField && dishName) {
+    noteField.value = 'Special request: Please prepare a table for trying ' + dishName + '.';
+  }
+
+  var bookSection = document.getElementById('book');
+  if (bookSection) {
+    bookSection.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeDishModal();
+  }
+});
+
+
+
+// Booking form handler
+function doBook(e) {
+  e.preventDefault();
+  var b = document.getElementById('bookBtn');
+  b.textContent = '✓ Reservation Confirmed! We\'ll call you shortly.';
+  b.style.background = 'linear-gradient(135deg,#2d6a4f,#40916c)';
+  b.style.color = '#fff';
+  setTimeout(function() {
+    b.textContent = '♛ Confirm Royal Reservation';
+    b.style.background = ''; b.style.color = '';
+    e.target.reset();
+  }, 4000);
+}
+
+// Contact form handler
+function doContact(e) {
+  e.preventDefault();
+  var b = document.getElementById('msgBtn');
+  b.innerHTML = '✓ Message Sent! We\'ll respond within 24 hours.';
+  b.style.background = 'linear-gradient(135deg,#2d6a4f,#40916c)';
+  b.style.color = '#fff';
+  setTimeout(function() {
+    b.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+    b.style.background = ''; b.style.color = '';
+    e.target.reset();
+  }, 4000);
+}
+</script>
+
+</body>
+</html>

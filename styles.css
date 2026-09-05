@@ -1,0 +1,75 @@
+/* Clean and Elegant CSS */
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.pb-safe {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+}
+
+@keyframes float-delayed {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+    animation: float-delayed 5s ease-in-out infinite;
+    animation-delay: 1.5s;
+}
+
+.hero-dish-container {
+    position: relative;
+}
+
+.steam {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: #FFF;
+    border-radius: 50%;
+    filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 15;
+}
+
+.steam-1 {
+    top: 30%; left: 45%;
+    animation: steamRise 4s ease-out infinite;
+}
+
+.steam-2 {
+    top: 40%; left: 55%;
+    animation: steamRise 5s ease-out infinite 1.2s;
+}
+
+.steam-3 {
+    top: 35%; left: 35%;
+    animation: steamRise 4.5s ease-out infinite 0.6s;
+}
+
+@keyframes steamRise {
+    0% { transform: translateY(0) scale(1) translateX(0); opacity: 0; }
+    20% { opacity: 0.5; }
+    100% { transform: translateY(-100px) scale(3) translateX(-20px); opacity: 0; }
+}
+
+.nav-scrolled {
+    background-color: rgba(253, 251, 247, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}

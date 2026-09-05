@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Royal Menu Book – Royal Restaurant</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════ RESET & BASE ═══════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#C9A84C;--gold-lt:#E8C97A;--gold-dk:#8B6914;
+  --champ:#F5E6C8;--dark:#0D0800;--page:#FDF6E8;
+  --page2:#F8EDD4;--ink:#2C1810;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --display:'Cinzel',serif;--body:'Raleway',sans-serif;
+}
+html,body{width:100%;height:100%;overflow:hidden}
+body{
+  background:radial-gradient(ellipse at center,#1a0800 0%,#0a0300 100%);
+  font-family:var(--body);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+
+/* ═══════════ GOLD PARTICLES ═══════════ */
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.particle{
+  position:absolute;width:4px;height:4px;border-radius:50%;
+  background:var(--gold);opacity:0;
+  animation:particleFloat linear infinite;
+}
+@keyframes particleFloat{
+  0%  {transform:translateY(110vh) rotate(0deg);opacity:0}
+  10% {opacity:.7}
+  90% {opacity:.4}
+  100%{transform:translateY(-10vh) rotate(720deg);opacity:0}
+}
+
+/* ═══════════ BACK BUTTON ═══════════ */
+.back-btn{
+  position:fixed;top:24px;left:28px;z-index:1000;
+  display:flex;align-items:center;gap:8px;
+  background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);
+  color:var(--gold);text-decoration:none;
+  font-family:var(--body);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:10px 20px;border-radius:50px;backdrop-filter:blur(10px);
+  transition:all .3s ease;
+}
+.back-btn:hover{background:var(--gold);color:var(--dark)}
+
+/* ═══════════ TITLE ═══════════ */
+.page-title{
+  position:fixed;top:24px;left:50%;transform:translateX(-50%);
+  z-index:1000;text-align:center;
+}
+.page-title h1{font-family:var(--display);font-size:1.1rem;color:var(--gold);letter-spacing:.3em}
+.page-title p{font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(245,230,200,.5);margin-top:3px}
+
+/* ═══════════ SCENE / BOOK WRAPPER ═══════════ */
+.scene{
+  position:relative;z-index:10;
+  width:900px;height:580px;
+  perspective:2200px;
+  perspective-origin:50% 45%;
+}
+
+/* ═══════════ BOOK ═══════════ */
+.book{
+  position:relative;width:100%;height:100%;
+  transform-style:preserve-3d;
+  animation:bookEntrance .8s cubic-bezier(.23,1.2,.32,1) forwards;
+}
+@keyframes bookEntrance{
+  from{transform:scale(.7) translateY(60px);opacity:0}
+  to  {transform:scale(1) translateY(0);opacity:1}
+}
+
+/* ═══════════ SPINE & SHADOW ═══════════ */
+.book-shadow{
+  position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);
+  width:80%;height:30px;
+  background:radial-gradient(ellipse,rgba(0,0,0,.5) 0%,transparent 70%);
+  filter:blur(10px);
+}
+
+/* ═══════════ PAGES BASE (right side) ═══════════ */
+.pages-stack{
+  position:absolute;right:0;top:0;
+  width:50%;height:100%;
+  background:var(--page);
+  border-radius:0 6px 6px 0;
+  box-shadow:2px 0 10px rgba(0,0,0,.2);
+}
+.pages-stack::before,
+.pages-stack::after{
+  content:'';position:absolute;top:4px;right:4px;
+  width:calc(100% - 2px);height:calc(100% - 8px);
+  background:var(--page2);border-radius:0 5px 5px 0;z-index:-1;
+}
+.pages-stack::after{top:8px;right:8px;background:#F3E6CC;z-index:-2}
+
+/* ═══════════ COVER (left half, opens) ═══════════ */
+.cover{
+  position:absolute;left:0;top:0;
+  width:50%;height:100%;
+  transform-origin:right center;
+  transform-style:preserve-3d;
+  animation:openCover .9s cubic-bezier(.4,0,.2,1) .5s forwards;
+  z-index:20;
+}
+@keyframes openCover{
+  0%  {transform:rotateY(0deg)}
+  100%{transform:rotateY(-155deg)}
+}
+
+/* Cover front face */
+.cover-front{
+  position:absolute;inset:0;
+  backface-visibility:hidden;
+  background:
+    linear-gradient(135deg,var(--gold-dk) 0%,var(--gold) 50%,var(--gold-lt) 100%),
+    repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(0,0,0,.04) 8px,rgba(0,0,0,.04) 9px);
+  border-radius:6px 0 0 6px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:30px;
+  box-shadow:-6px 0 20px rgba(0,0,0,.5),inset 3px 0 15px rgba(255,255,255,.15);
+}
+.cover-front .book-title{
+  font-family:var(--display);font-size:2rem;font-weight:700;
+  color:var(--dark);letter-spacing:.1em;text-align:center;line-height:1.2;
+  text-shadow:0 1px 2px rgba(255,255,255,.3);
+}
+.cover-front .book-sub{
+  font-family:var(--serif);font-size:1rem;font-style:italic;
+  color:rgba(20,10,0,.7);margin-top:10px;text-align:center;
+}
+.cover-crown{font-size:2.5rem;margin-bottom:14px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+.cover-divider{
+  width:80%;height:1px;
+  background:linear-gradient(to right,transparent,rgba(20,10,0,.4),transparent);
+  margin:12px 0;
+}
+.cover-front .ornament{font-size:1.1rem;color:rgba(20,10,0,.5);letter-spacing:.5em}
+
+/* Cover inner spine */
+.cover-spine{
+  position:absolute;right:0;top:0;width:18px;height:100%;
+  background:linear-gradient(to right,var(--gold-dk),var(--gold));
+  transform:rotateY(90deg) translateX(9px);
+  transform-origin:right center;backface-visibility:hidden;
+}
+
+/* Cover back (white inside) */
+.cover-back{
+  position:absolute;inset:0;
+  backface-visibility:hidden;
+  transform:rotateY(180deg);
+  background:var(--page);
+  border-radius:6px 0 0 6px;
+}
+
+/* ═══════════ PAGE CONTENT AREA ═══════════ */
+.page-content{
+  position:absolute;right:0;top:0;
+  width:50%;height:100%;
+  padding:28px 26px 20px;
+  overflow:hidden;
+}
+
+/* Left inner page (fixed, shows category nav) */
+.left-page{
+  position:absolute;left:0;top:0;
+  width:50%;height:100%;
+  background:var(--page);
+  border-right:2px solid rgba(201,168,76,.25);
+  padding:28px 22px 20px;
+  box-shadow:inset -8px 0 20px rgba(0,0,0,.06);
+  z-index:5;
+}
+.left-page .rest-logo{
+  text-align:center;margin-bottom:20px;
+  padding-bottom:16px;
+  border-bottom:1px solid rgba(201,168,76,.3);
+}
+.left-page .rest-logo .rn{font-family:var(--display);font-size:1.1rem;color:var(--gold-dk);letter-spacing:.12em}
+.left-page .rest-logo .rs{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(44,24,16,.5);margin-top:3px}
+
+/* Category tabs on left page */
+.cat-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.cat-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 14px;border-radius:4px;cursor:pointer;
+  transition:all .25s ease;border:1px solid transparent;
+  font-family:var(--body);font-size:.75rem;letter-spacing:.1em;
+  color:rgba(44,24,16,.7);font-weight:500;
+  position:relative;overflow:hidden;
+}
+.cat-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--gold);transform:scaleY(0);transition:transform .25s ease;
+  border-radius:0 2px 2px 0;
+}
+.cat-item.active{
+  background:linear-gradient(to right,rgba(201,168,76,.15),transparent);
+  border-color:rgba(201,168,76,.35);color:var(--gold-dk);font-weight:600;
+}
+.cat-item.active::before{transform:scaleY(1)}
+.cat-item:hover:not(.active){background:rgba(201,168,76,.08)}
+.cat-icon{font-size:1.4rem;flex-shrink:0;transition:transform .25s ease}
+.cat-item.active .cat-icon{transform:scale(1.2)}
+.cat-count{
+  margin-left:auto;font-size:.6rem;
+  background:var(--gold);color:var(--dark);
+  padding:2px 7px;border-radius:50px;font-weight:700;
+}
+.menu-note{
+  margin-top:18px;padding-top:16px;border-top:1px solid rgba(201,168,76,.2);
+  font-family:var(--serif);font-size:.78rem;font-style:italic;
+  color:rgba(44,24,16,.45);line-height:1.6;text-align:center;
+}
+
+/* ═══════════ RIGHT PAGE – FOOD ITEMS ═══════════ */
+.right-page{
+  position:absolute;right:0;top:0;
+  width:50%;height:100%;
+  background:var(--page2);
+  padding:20px 22px 16px;
+  overflow-y:auto;overflow-x:hidden;
+  scrollbar-width:thin;scrollbar-color:rgba(201,168,76,.4) transparent;
+}
+.right-page::-webkit-scrollbar{width:3px}
+.right-page::-webkit-scrollbar-thumb{background:rgba(201,168,76,.4);border-radius:2px}
+
+.category-title{
+  font-family:var(--display);font-size:1rem;color:var(--gold-dk);
+  letter-spacing:.15em;margin-bottom:4px;display:flex;align-items:center;gap:8px;
+}
+.category-subtitle{
+  font-family:var(--serif);font-size:.78rem;font-style:italic;
+  color:rgba(44,24,16,.5);margin-bottom:14px;
+}
+.cat-gold-line{
+  height:1px;background:linear-gradient(to right,var(--gold),transparent);
+  margin-bottom:14px;
+}
+
+/* FOOD CARDS */
+.food-grid{display:flex;flex-direction:column;gap:8px}
+.food-item{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.6);
+  border:1px solid rgba(201,168,76,.2);
+  border-radius:6px;padding:9px 12px;
+  transition:all .2s ease;cursor:pointer;
+  position:relative;overflow:hidden;
+  opacity:0;transform:translateX(40px);
+}
+.food-item.animated{
+  opacity:1;transform:translateX(0);
+  transition:opacity .35s ease, transform .35s cubic-bezier(.23,1.2,.32,1);
+}
+.food-item:hover{
+  border-color:var(--gold);
+  background:rgba(255,255,255,.9);
+  box-shadow:0 4px 16px rgba(201,168,76,.2);
+  transform:translateX(4px);
+}
+.food-item:hover .food-emoji{animation:foodBounce .4s cubic-bezier(.36,.07,.19,.97) both}
+@keyframes foodBounce{
+  0%,100%{transform:scale(1)}
+  30%    {transform:scale(1.35) rotate(-8deg)}
+  60%    {transform:scale(.9) rotate(4deg)}
+}
+.food-emoji{
+  font-size:2rem;flex-shrink:0;width:46px;text-align:center;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));
+  transition:transform .3s ease;
+}
+.food-info{flex:1;min-width:0}
+.food-name{
+  font-family:var(--serif);font-size:.9rem;font-weight:600;
+  color:var(--ink);line-height:1.2;
+}
+.food-desc{
+  font-size:.66rem;color:rgba(44,24,16,.5);line-height:1.4;margin-top:2px;
+  font-style:italic;
+}
+.food-price{
+  font-family:var(--display);font-size:.9rem;color:var(--gold-dk);font-weight:600;
+  flex-shrink:0;
+}
+.food-badge{
+  position:absolute;top:6px;right:8px;
+  font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 6px;border-radius:50px;font-weight:700;
+}
+.badge-veg{background:rgba(40,167,69,.15);color:#1a6e30;border:1px solid rgba(40,167,69,.3)}
+.badge-nonveg{background:rgba(220,53,69,.12);color:#8b1a26;border:1px solid rgba(220,53,69,.25)}
+.badge-spicy{background:rgba(255,140,0,.15);color:#b35a00;border:1px solid rgba(255,140,0,.3)}
+.badge-chef{background:rgba(201,168,76,.2);color:var(--gold-dk);border:1px solid rgba(201,168,76,.4)}
+
+/* ═══════════ PAGE FLIP ANIMATION ═══════════ */
+.page-panel{
+  position:absolute;inset:0;
+  transform-style:preserve-3d;
+  animation:pageFlipIn .5s cubic-bezier(.4,0,.2,1) forwards;
+  transform-origin:left center;
+}
+@keyframes pageFlipIn{
+  from{transform:rotateY(-90deg);opacity:.5}
+  to  {transform:rotateY(0deg);opacity:1}
+}
+.page-panel.flip-out{
+  animation:pageFlipOut .4s cubic-bezier(.4,0,.8,1) forwards;
+}
+@keyframes pageFlipOut{
+  from{transform:rotateY(0deg);opacity:1}
+  to  {transform:rotateY(90deg);opacity:.5}
+}
+
+/* ═══════════ DECORATIVE ELEMENTS ═══════════ */
+.page-corner{
+  position:absolute;bottom:0;right:0;
+  width:32px;height:32px;overflow:hidden;cursor:pointer;
+  transition:all .2s ease;
+}
+.page-corner::before{
+  content:'';position:absolute;bottom:0;right:0;
+  width:0;height:0;
+  border-style:solid;border-width:0 0 32px 32px;
+  border-color:transparent transparent rgba(201,168,76,.35) transparent;
+  transition:all .2s ease;
+}
+.page-corner:hover::before{border-width:0 0 44px 44px;border-color:transparent transparent rgba(201,168,76,.6) transparent}
+.page-corner span{
+  position:absolute;bottom:3px;right:3px;
+  font-size:.55rem;color:rgba(201,168,76,.7);
+}
+
+/* Decorative page lines */
+.page-lines{
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.06;
+}
+.page-lines::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(to bottom,transparent,transparent 26px,rgba(44,24,16,.8) 26px,rgba(44,24,16,.8) 27px);
+}
+
+/* ═══════════ FLOATING FOOD EMOJIS (background) ═══════════ */
+.bg-food{
+  position:fixed;pointer-events:none;z-index:1;
+  font-size:1.8rem;opacity:.08;
+  animation:bgFoodFloat linear infinite;
+}
+@keyframes bgFoodFloat{
+  0%  {transform:translateY(110vh) rotate(0deg);opacity:0}
+  15% {opacity:.1}
+  85% {opacity:.07}
+  100%{transform:translateY(-10vh) rotate(360deg);opacity:0}
+}
+
+/* ═══════════ CATEGORY COVER PAGE ═══════════ */
+.cat-cover{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;text-align:center;
+}
+.cat-cover-emoji{font-size:5rem;margin-bottom:16px;animation:coverEmoji 1s cubic-bezier(.23,1.2,.32,1) both}
+@keyframes coverEmoji{
+  from{transform:scale(0) rotate(-180deg);opacity:0}
+  to  {transform:scale(1) rotate(0deg);opacity:1}
+}
+.cat-cover-title{font-family:var(--display);font-size:1.6rem;color:var(--gold-dk);letter-spacing:.1em}
+.cat-cover-sub{font-family:var(--serif);font-size:.95rem;font-style:italic;color:rgba(44,24,16,.55);margin-top:8px}
+.cat-cover-line{width:60%;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:14px auto}
+
+/* ═══════════ PAGE NUMBER ═══════════ */
+.page-number{
+  position:absolute;bottom:10px;
+  font-family:var(--serif);font-size:.7rem;font-style:italic;
+  color:rgba(44,24,16,.35);letter-spacing:.1em;
+}
+.left-page .page-number{right:14px}
+.right-page .page-number{left:14px;bottom:10px;position:sticky;margin-top:8px;text-align:left}
+
+/* ═══════════ OPENING ANIMATION ═══════════ */
+.book-closed{
+  cursor:pointer;
+  animation:bookEntrance .8s cubic-bezier(.23,1.2,.32,1) forwards, bookFloat 3s ease-in-out 1.5s infinite;
+}
+@keyframes bookFloat{
+  0%,100%{transform:translateY(0) rotateX(2deg)}
+  50%    {transform:translateY(-10px) rotateX(-1deg)}
+}
+
+/* OPEN button on cover */
+.open-btn{
+  margin-top:20px;
+  background:rgba(20,10,0,.25);
+  border:1px solid rgba(20,10,0,.3);
+  color:rgba(20,10,0,.7);
+  font-family:var(--body);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:9px 22px;border-radius:50px;cursor:pointer;
+  transition:all .25s ease;
+}
+.open-btn:hover{background:rgba(20,10,0,.4);color:var(--dark)}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media(max-width:960px){
+  .scene{width:98vw;height:90vh;max-width:900px;max-height:580px}
+}
+@media(max-width:600px){
+  .scene{width:99vw;height:95vh}
+  .left-page{display:none}
+  .right-page{width:100%;left:0}
+  .pages-stack{left:0;width:100%}
+  .cover-front .book-title{font-size:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Background particles -->
+<div class="particles" id="particles"></div>
+
+<!-- Floating background food emojis -->
+<div class="bg-food" id="bgFood"></div>
+
+<!-- Back button -->
+<a href="index.html" class="back-btn">← Back to Royal Restaurant</a>
+
+<!-- Page title -->
+<div class="page-title">
+  <h1>♛ ROYAL MENU BOOK</h1>
+  <p>Ore Chakand · Gaya · Bihar</p>
+</div>
+
+<!-- MAIN BOOK SCENE -->
+<div class="scene">
+  <div class="book" id="mainBook">
+
+    <!-- Book shadow -->
+    <div class="book-shadow"></div>
+
+    <!-- Pages stack (back pages visible on right) -->
+    <div class="pages-stack"></div>
+
+    <!-- LEFT INNER PAGE (category navigation) -->
+    <div class="left-page" id="leftPage" style="display:none">
+      <div class="page-lines"></div>
+      <div class="rest-logo">
+        <div class="rn">♛ ROYAL RESTAURANT</div>
+        <div class="rs">Ore Chakand, Gaya, Bihar</div>
+      </div>
+
+      <ul class="cat-list" id="catList">
+        <li class="cat-item active" data-cat="veg" onclick="showCategory('veg',this)">
+          <span class="cat-icon">🥗</span>
+          <span>Veg Specials</span>
+          <span class="cat-count">8</span>
+        </li>
+        <li class="cat-item" data-cat="nonveg" onclick="showCategory('nonveg',this)">
+          <span class="cat-icon">🍗</span>
+          <span>Non-Veg Royale</span>
+          <span class="cat-count">8</span>
+        </li>
+        <li class="cat-item" data-cat="chinese" onclick="showCategory('chinese',this)">
+          <span class="cat-icon">🍜</span>
+          <span>Chinese Corner</span>
+          <span class="cat-count">6</span>
+        </li>
+        <li class="cat-item" data-cat="dessert" onclick="showCategory('dessert',this)">
+          <span class="cat-icon">🍮</span>
+          <span>Royal Desserts</span>
+          <span class="cat-count">6</span>
+        </li>
+        <li class="cat-item" data-cat="drinks" onclick="showCategory('drinks',this)">
+          <span class="cat-icon">🥤</span>
+          <span>Royal Drinks</span>
+          <span class="cat-count">6</span>
+        </li>
+      </ul>
+
+      <div class="menu-note">
+        ✦ All dishes are prepared fresh daily with the finest ingredients ✦
+      </div>
+      <div class="page-number">Menu · Page 1</div>
+    </div>
+
+    <!-- RIGHT PAGE (food items display) -->
+    <div class="right-page" id="rightPage" style="display:none">
+      <div class="page-lines"></div>
+      <div id="pageContent"></div>
+    </div>
+
+    <!-- BOOK COVER (animates open on click) -->
+    <div class="cover" id="bookCover">
+      <!-- Spine -->
+      <div class="cover-spine"></div>
+      <!-- Front face -->
+      <div class="cover-front">
+        <div class="cover-crown">♛</div>
+        <div class="cover-divider"></div>
+        <div class="book-title">ROYAL<br/>RESTAURANT</div>
+        <div class="book-sub">The Grand Menu Collection</div>
+        <div class="cover-divider" style="margin-top:12px"></div>
+        <div class="ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
+        <button class="open-btn" onclick="openBook()">Open Menu ➔</button>
+      </div>
+      <!-- Back face (inside of cover) -->
+      <div class="cover-back"></div>
+    </div>
+
+    <!-- Page turn corner (right side) -->
+    <div class="page-corner" id="pageCorner" style="display:none" onclick="nextCategory()">
+      <span>▶</span>
+    </div>
+
+  </div><!-- /book -->
+</div><!-- /scene -->
+
+<script>
+/* ═══════════ DATA ═══════════ */
+const menuData = {
+  veg: {
+    title: '🥗 Veg Specials',
+    subtitle: 'Fresh from nature, cooked with love',
+    emoji: '🥗',
+    items: [
+      { emoji:'🍛', name:'Paneer Lababdar', desc:'Creamy tomato gravy with golden paneer, fenugreek finish', price:'₹260', badge:'veg' },
+      { emoji:'🧀', name:'Paneer Tikka Maharaja', desc:'Saffron-yoghurt marinated, chargrilled with peppers', price:'₹220', badge:'veg' },
+      { emoji:'🥘', name:'Dal Makhani Royal', desc:'Black lentils slow-cooked overnight with butter & cream', price:'₹180', badge:'veg' },
+      { emoji:'🫛', name:'Kadai Paneer', desc:'Cottage cheese with roasted peppers in spiced tomato masala', price:'₹240', badge:'veg' },
+      { emoji:'🌽', name:'Malai Kofta', desc:'Soft potato-paneer dumplings in a rich mildly sweet gravy', price:'₹220', badge:'veg' },
+      { emoji:'🍅', name:'Shahi Aloo', desc:'Baby potatoes in saffron-infused royal Mughal gravy', price:'₹180', badge:'chef' },
+      { emoji:'🫘', name:'Chana Masala', desc:'Robust chickpeas in aromatic Bihari-style spiced gravy', price:'₹160', badge:'veg' },
+      { emoji:'🥬', name:'Palak Paneer', desc:'Fresh spinach purée with cottage cheese & kasoori methi', price:'₹200', badge:'veg' },
+    ]
+  },
+  nonveg: {
+    title: '🍗 Non-Veg Royale',
+    subtitle: 'Masterstrokes of Mughal & Bihari cuisine',
+    emoji: '🍗',
+    items: [
+      { emoji:'🍗', name:'Royal Butter Chicken', desc:'Succulent chicken in velvety tomato-butter-cream sauce', price:'₹320', badge:'nonveg' },
+      { emoji:'🥩', name:'Bihari Mutton Curry', desc:'Slow-cooked mutton in authentic legacy Bihari spices', price:'₹380', badge:'nonveg' },
+      { emoji:'🍢', name:'Royal Seekh Kebab', desc:'Minced lamb with spices grilled over live charcoal', price:'₹280', badge:'chef' },
+      { emoji:'🍖', name:'Chicken Leg Roast', desc:'Slow-roasted legs in Royal masala with mint chutney', price:'₹320', badge:'nonveg' },
+      { emoji:'🥗', name:'Mutton Keema Masala', desc:'Spiced minced mutton cooked with peas & whole spices', price:'₹340', badge:'nonveg' },
+      { emoji:'🐟', name:'Fish Fry Amritsari', desc:'Crispy marinated fish fillet with ajwain & chaat masala', price:'₹350', badge:'spicy' },
+      { emoji:'🍳', name:'Egg Bhurji Royal', desc:'Scrambled eggs with onions, tomatoes & green chillies', price:'₹140', badge:'nonveg' },
+      { emoji:'🍲', name:'Chicken Rogan Josh', desc:'Kashmiri-style slow-cooked chicken in robust red gravy', price:'₹300', badge:'spicy' },
+    ]
+  },
+  chinese: {
+    title: '🍜 Chinese Corner',
+    subtitle: 'Indo-Chinese fusion done royally',
+    emoji: '🍜',
+    items: [
+      { emoji:'🍜', name:'Veg Hakka Noodles', desc:'Stir-fried noodles with crisp vegetables in soy sauce', price:'₹180', badge:'veg' },
+      { emoji:'🍛', name:'Chicken Fried Rice', desc:'Wok-tossed rice with chicken, eggs & spring onions', price:'₹200', badge:'nonveg' },
+      { emoji:'🥟', name:'Veg Momos', desc:'Steamed dumplings filled with spiced cabbage & carrots', price:'₹130', badge:'veg' },
+      { emoji:'🍗', name:'Chilli Chicken', desc:'Crispy chicken tossed in spicy-tangy Indo-Chinese sauce', price:'₹240', badge:'spicy' },
+      { emoji:'🌶️', name:'Paneer Manchurian', desc:'Fried paneer in soy-ginger-garlic Manchurian gravy', price:'₹220', badge:'veg' },
+      { emoji:'🥘', name:'Chicken Manchow Soup', desc:'Rich broth with chicken, vegetables & crispy noodles', price:'₹160', badge:'nonveg' },
+    ]
+  },
+  dessert: {
+    title: '🍮 Royal Desserts',
+    subtitle: 'Sweet endings fit for a Maharaja',
+    emoji: '🍮',
+    items: [
+      { emoji:'🍮', name:'Shahi Phirni', desc:'Silky rice pudding with cardamom, saffron & rose petals', price:'₹120', badge:'veg' },
+      { emoji:'🟤', name:'Gulab Jamun Royale', desc:'Soft khoya dumplings in rose-cardamom syrup, pistachio', price:'₹90', badge:'veg' },
+      { emoji:'🍨', name:'Kulfi Malai', desc:'Creamy frozen dessert with saffron, pistachio & cardamom', price:'₹100', badge:'chef' },
+      { emoji:'🍯', name:'Gajar Ka Halwa', desc:'Slow-cooked carrot pudding with ghee, milk & dry fruits', price:'₹110', badge:'veg' },
+      { emoji:'🥛', name:'Rabri', desc:'Thickened sweetened milk with saffron strands & nuts', price:'₹100', badge:'veg' },
+      { emoji:'🍰', name:'Rasmalai Special', desc:'Soft chenna discs in chilled saffron-cardamom cream', price:'₹120', badge:'veg' },
+    ]
+  },
+  drinks: {
+    title: '🥤 Royal Drinks',
+    subtitle: 'Refreshing sips for the royal soul',
+    emoji: '🥤',
+    items: [
+      { emoji:'🥭', name:'Royal Mango Lassi', desc:'Alphonso mango pulp with yoghurt, cardamom & saffron', price:'₹90', badge:'veg' },
+      { emoji:'☕', name:'Kahwa Gold', desc:'Kashmiri saffron tea with almonds, cinnamon & cardamom', price:'₹70', badge:'chef' },
+      { emoji:'🌹', name:'Rose Sharbat', desc:'Chilled rose-flavoured drink with basil seeds & milk', price:'₹60', badge:'veg' },
+      { emoji:'🍋', name:'Nimbu Pani Royal', desc:'Fresh lime with black salt, cumin & mint leaves', price:'₹50', badge:'veg' },
+      { emoji:'🥛', name:'Badam Milk', desc:'Warm almond milk with saffron, cardamom & sugar', price:'₹80', badge:'veg' },
+      { emoji:'🍵', name:'Masala Chai', desc:'Spiced tea with ginger, cardamom, clove & star anise', price:'₹40', badge:'veg' },
+    ]
+  }
+};
+
+const catOrder = ['veg','nonveg','chinese','dessert','drinks'];
+let currentCatIndex = 0;
+let isOpen = false;
+
+/* ═══════════ PARTICLES ═══════════ */
+function createParticles(){
+  const container = document.getElementById('particles');
+  for(let i=0;i<30;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random()*100+'vw';
+    p.style.width = p.style.height = (2+Math.random()*4)+'px';
+    p.style.animationDuration = (6+Math.random()*10)+'s';
+    p.style.animationDelay = (Math.random()*8)+'s';
+    p.style.opacity = 0;
+    container.appendChild(p);
+  }
+}
+
+/* ═══════════ FLOATING BG FOODS ═══════════ */
+const bgFoods = ['🍛','🥘','🍗','🥗','🍜','🍮','🥤','🍢','🥟','🍖','☕','🍨'];
+function createBgFood(){
+  const container = document.getElementById('bgFood');
+  container.remove();
+  const wrap = document.createElement('div');
+  wrap.style.position='fixed';wrap.style.inset='0';wrap.style.pointerEvents='none';wrap.style.zIndex='1';
+  bgFoods.forEach((f,i)=>{
+    const el = document.createElement('div');
+    el.className='bg-food';
+    el.textContent=f;
+    el.style.left=Math.random()*95+'vw';
+    el.style.animationDuration=(12+Math.random()*14)+'s';
+    el.style.animationDelay=(Math.random()*12)+'s';
+    el.style.fontSize=(1.2+Math.random()*1.5)+'rem';
+    wrap.appendChild(el);
+  });
+  document.body.appendChild(wrap);
+}
+
+/* ═══════════ OPEN BOOK ═══════════ */
+function openBook(){
+  if(isOpen) return;
+  isOpen = true;
+  const cover = document.getElementById('bookCover');
+  const leftPage = document.getElementById('leftPage');
+  const rightPage = document.getElementById('rightPage');
+  const corner = document.getElementById('pageCorner');
+
+  // Trigger cover open animation via CSS (already set), just ensure it runs
+  cover.style.animationPlayState = 'running';
+
+  // After cover opens, show pages
+  setTimeout(()=>{
+    leftPage.style.display = 'block';
+    leftPage.style.animation = 'pageFlipIn .5s cubic-bezier(.4,0,.2,1) forwards';
+    rightPage.style.display = 'block';
+    corner.style.display = 'block';
+    showCategory('veg', document.querySelector('[data-cat="veg"]'));
+  }, 700);
+}
+
+/* ═══════════ SHOW CATEGORY ═══════════ */
+function showCategory(cat, el){
+  // Update active tab
+  document.querySelectorAll('.cat-item').forEach(i=>i.classList.remove('active'));
+  if(el) el.classList.add('active');
+  currentCatIndex = catOrder.indexOf(cat);
+
+  const data = menuData[cat];
+  const container = document.getElementById('pageContent');
+
+  // Animate out
+  container.style.opacity='0';
+  container.style.transform='translateX(30px)';
+  container.style.transition='all .2s ease';
+
+  setTimeout(()=>{
+    container.innerHTML = buildPage(data);
+    container.style.transition='all .3s cubic-bezier(.23,1.2,.32,1)';
+    container.style.opacity='1';
+    container.style.transform='translateX(0)';
+
+    // Animate food items in one by one
+    const items = container.querySelectorAll('.food-item');
+    items.forEach((item,i)=>{
+      setTimeout(()=>{ item.classList.add('animated'); }, i*70);
+    });
+  }, 200);
+}
+
+function buildPage(data){
+  const badgeMap = {
+    veg:'badge-veg',nonveg:'badge-nonveg',spicy:'badge-spicy',chef:'badge-chef'
+  };
+  const badgeLabel = {veg:'Veg',nonveg:'Non-Veg',spicy:'🌶 Spicy',chef:'Chef\'s Pick'};
+  return `
+    <div class="category-title">${data.title}</div>
+    <div class="category-subtitle">${data.subtitle}</div>
+    <div class="cat-gold-line"></div>
+    <div class="food-grid">
+      ${data.items.map(item=>`
+        <div class="food-item">
+          <div class="food-emoji">${item.emoji}</div>
+          <div class="food-info">
+            <div class="food-name">${item.name}</div>
+            <div class="food-desc">${item.desc}</div>
+          </div>
+          <div class="food-price">${item.price}</div>
+          <div class="food-badge ${badgeMap[item.badge]}">${badgeLabel[item.badge]}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="page-number">Page ${catOrder.indexOf(Object.keys(menuData).find(k=>menuData[k]===data))+2} of ${catOrder.length+1}</div>
+  `;
+}
+
+/* ═══════════ NEXT CATEGORY (page corner) ═══════════ */
+function nextCategory(){
+  currentCatIndex = (currentCatIndex+1) % catOrder.length;
+  const nextCat = catOrder[currentCatIndex];
+  const nextEl = document.querySelector(`[data-cat="${nextCat}"]`);
+  showCategory(nextCat, nextEl);
+}
+
+/* ═══════════ KEYBOARD NAVIGATION ═══════════ */
+document.addEventListener('keydown', e=>{
+  if(!isOpen) return;
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){
+    e.preventDefault();nextCategory();
+  } else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){
+    e.preventDefault();
+    currentCatIndex = (currentCatIndex-1+catOrder.length) % catOrder.length;
+    const cat = catOrder[currentCatIndex];
+    showCategory(cat, document.querySelector(`[data-cat="${cat}"]`));
+  }
+});
+
+/* ═══════════ AUTO-OPEN WITH DELAY ═══════════ */
+window.addEventListener('DOMContentLoaded', ()=>{
+  createParticles();
+  createBgFood();
+  // Auto-open after 2s for demo
+  setTimeout(openBook, 2000);
+});
+</script>
+</body>
+</html>
