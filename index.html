@@ -12,6 +12,10 @@
 <!-- Font Awesome CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
+<!-- Leaflet Map CSS -->
+<link rel="stylesheet" href="vendor/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media='all'"/>
+
 <style>
 /* ── VARIABLES ─────────────────────────────────────────── */
 :root{
@@ -893,14 +897,64 @@ a{text-decoration:none}
 
 /* ── LOCATION ──────────────────────────────────────────── */
 #location{padding:100px 0;background:var(--dark)}
-.loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
-.map-box{position:relative;border-radius:4px;overflow:hidden;border:1px solid var(--gborder)}
-.map-box iframe{width:100%;height:370px;display:block;filter:brightness(.78) sepia(.18) saturate(.9)}
-.loc-info h3{font-family:var(--display);font-size:1.75rem;color:var(--champ);margin-bottom:22px}
-.loc-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
+.loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:flex-start}
+.map-box{position:relative;border-radius:6px;overflow:hidden;border:1px solid var(--gborder);box-shadow:0 12px 36px rgba(0,0,0,.6);background:rgba(18,11,4,.95)}
+#restaurant-map{width:100%;height:380px;display:block;background:#140e08;z-index:1}
+.map-top-bar{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:center;z-index:1000;pointer-events:none}
+.map-live-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(18,11,4,.92);backdrop-filter:blur(8px);border:1px solid rgba(201,168,76,.45);color:var(--champ);font-size:.72rem;font-weight:600;padding:5px 12px;border-radius:20px;letter-spacing:.04em;pointer-events:auto;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:#ef4444;box-shadow:0 0 8px #ef4444;animation:beaconPulse 1.6s infinite}
+@keyframes beaconPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}}
+.map-quick-btns{display:flex;gap:6px;pointer-events:auto}
+.map-tool-btn{background:rgba(18,11,4,.92);backdrop-filter:blur(8px);border:1px solid rgba(201,168,76,.45);color:var(--champ);font-size:.72rem;font-weight:600;padding:5px 10px;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:var(--ease);text-decoration:none}
+.map-tool-btn:hover,.map-tool-btn.active{background:var(--gold);color:var(--dark);border-color:var(--gold)}
+
+/* Location Photo Strip below Map */
+.loc-photo-strip{display:flex;align-items:center;gap:14px;padding:12px 16px;background:rgba(20,12,4,.96);border-top:1px solid var(--gborder)}
+.loc-photo-img-wrap{position:relative;width:95px;height:60px;border-radius:4px;overflow:hidden;flex-shrink:0;border:1px solid rgba(201,168,76,.4);box-shadow:0 4px 10px rgba(0,0,0,.5)}
+.loc-photo-thumb{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.loc-photo-img-wrap:hover .loc-photo-thumb{transform:scale(1.08)}
+.loc-photo-badge{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.78);color:var(--gold);font-size:.5rem;font-weight:700;padding:2px 3px;text-align:center;letter-spacing:.05em;text-transform:uppercase}
+.loc-photo-text strong{display:block;font-family:var(--display);font-size:.92rem;color:var(--champ);margin-bottom:3px}
+.loc-photo-text p{font-size:.74rem;color:rgba(201,168,76,.9);font-family:var(--serif);margin:0;line-height:1.4}
+
+/* Leaflet Customization */
+.leaflet-container{font-family:var(--body)!important}
+.leaflet-bar{border:1px solid var(--gborder)!important;border-radius:4px!important;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.5)!important}
+.leaflet-bar a{background:rgba(20,12,4,.92)!important;color:var(--champ)!important;border-bottom:1px solid rgba(201,168,76,.2)!important}
+.leaflet-bar a:hover{background:var(--gold)!important;color:var(--dark)!important}
+.leaflet-control-attribution{background:rgba(13,8,0,.85)!important;color:rgba(245,230,200,.6)!important;font-size:9px!important}
+.leaflet-control-attribution a{color:var(--gold)!important}
+
+/* Custom Red Marker with glowing pulse */
+.custom-red-pin-marker{background:none!important;border:none!important}
+.red-pin-container{position:relative;width:40px;height:48px}
+.red-pin-pulse{position:absolute;bottom:0;left:50%;margin-left:-18px;margin-bottom:-6px;width:36px;height:18px;background:rgba(239,68,68,.4);border-radius:50%;animation:redPinPulse 1.8s infinite ease-out;pointer-events:none}
+@keyframes redPinPulse{0%{transform:scale(.4);opacity:1}100%{transform:scale(2.4);opacity:0}}
+.red-pin-body{position:relative;width:36px;height:46px;margin:0 auto;filter:drop-shadow(0 6px 12px rgba(0,0,0,.7));transition:transform .3s cubic-bezier(.34,1.56,.64,1);cursor:pointer}
+.red-pin-body svg{display:block;width:100%;height:100%}
+.red-pin-bounce .red-pin-body{animation:markerBounce .8s ease}
+@keyframes markerBounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-14px) scale(1.12)}60%{transform:translateY(-4px) scale(1.04)}80%{transform:translateY(-8px) scale(1.07)}}
+
+/* Luxury Leaflet Popup */
+.leaflet-popup-content-wrapper{background:rgba(20,12,4,.98)!important;backdrop-filter:blur(14px);border:1px solid rgba(201,168,76,.6)!important;border-radius:6px!important;box-shadow:0 12px 36px rgba(0,0,0,.9),0 0 24px rgba(201,168,76,.3)!important;color:var(--champ)!important;padding:0!important;overflow:hidden}
+.leaflet-popup-tip{background:rgba(20,12,4,.98)!important;border:1px solid rgba(201,168,76,.6)!important;border-top:none;border-left:none}
+.leaflet-popup-content{margin:0!important;line-height:1.4!important;width:280px!important}
+.popup-card{overflow:hidden;border-radius:6px}
+.popup-img{width:100%;height:115px;object-fit:cover;display:block;border-bottom:1px solid rgba(201,168,76,.35)}
+.popup-body{padding:12px 15px 14px}
+.popup-head{display:flex;align-items:center;gap:6px;font-family:var(--display);font-size:1.02rem;color:var(--gold);font-weight:700;margin-bottom:3px}
+.popup-badge-sub{font-size:.64rem;color:rgba(201,168,76,.9);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;font-style:italic}
+.popup-coord{font-family:monospace;font-size:.74rem;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);padding:3px 7px;border-radius:3px;color:var(--champ);margin-bottom:8px;display:inline-block}
+.popup-addr{font-family:var(--serif);font-size:.84rem;color:rgba(245,230,200,.85);margin-bottom:12px;line-height:1.4}
+.popup-cta{display:inline-flex;align-items:center;justify-content:center;gap:7px;width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dk));color:var(--dark)!important;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;border-radius:3px;text-decoration:none;transition:var(--ease);box-sizing:border-box}
+.popup-cta:hover{background:var(--gold-lt);transform:translateY(-1px);box-shadow:0 4px 12px rgba(201,168,76,.45)}
+
+.loc-info h3{font-family:var(--display);font-size:1.85rem;color:var(--champ);margin-bottom:8px}
+.loc-tagline{font-family:var(--serif);font-size:1rem;color:var(--gold);font-style:italic;margin-bottom:20px;letter-spacing:.02em}
+.loc-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px}
 .loc-item span{color:var(--gold);margin-top:2px;font-size:1rem}
-.loc-item p{font-family:var(--serif);font-size:.95rem;color:rgba(245,230,200,.78);line-height:1.7}
-.hours{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:24px;padding:22px;background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--gborder);border-radius:4px}
+.loc-item p{font-family:var(--serif);font-size:.95rem;color:rgba(245,230,200,.82);line-height:1.6}
+.hours{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:20px;padding:20px;background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--gborder);border-radius:4px}
 .hi{display:flex;justify-content:space-between;padding:5px 0;font-size:.82rem}
 .hi .d{color:rgba(245,230,200,.55)}.hi .t{color:var(--gold);font-family:var(--body)}
 
@@ -1885,16 +1939,44 @@ footer{background:var(--dbrown);border-top:1px solid var(--gborder);padding:75px
   </div>
   <div class="wrap">
     <div class="loc-grid">
-      <div class="map-box reveal">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.1!2d84.9947!3d24.7955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398d42a3b7f6d6d5%3A0x21e11de65bef0ab0!2sGaya%2C%20Bihar!5e0!3m2!1sen!2sin!4v1693000000000"
-          allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Royal Restaurant Location"></iframe>
+      <div class="map-box reveal" id="mapBoxWrap">
+        <div class="map-top-bar">
+          <div class="map-live-tag">
+            <span class="pulse-dot"></span>
+            <span>Royal Restaurant &bull; 24°55&prime;21.5&Prime;N 84°59&prime;12.6&Prime;E</span>
+          </div>
+          <div class="map-quick-btns">
+            <button type="button" class="map-tool-btn" id="mapLayerToggle" onclick="toggleMapLayer()" title="Toggle Satellite / Street View">
+              <i class="fas fa-layer-group"></i> Satellite
+            </button>
+            <button type="button" class="map-tool-btn" onclick="focusAndGetDirections()" title="Focus on Restaurant Pin">
+              <i class="fas fa-crosshairs"></i> Focus
+            </button>
+            <a href="https://www.google.com/maps?q=24.922639,84.986833" target="_blank" class="map-tool-btn" title="Open 24°55'21.5&quot;N 84°59'12.6&quot;E in Google Maps">
+              <i class="fas fa-external-link-alt"></i> Maps
+            </a>
+          </div>
+        </div>
+        <div id="restaurant-map"></div>
+        <div class="loc-photo-strip">
+          <div class="loc-photo-img-wrap">
+            <img src="images/royal-restaurant-front.jpg" alt="Royal Restaurant Exterior" class="loc-photo-thumb" />
+            <span class="loc-photo-badge">Front View</span>
+          </div>
+          <div class="loc-photo-text">
+            <strong>Royal Restaurant &bull; Taste It. Love It &amp; Remember It</strong>
+            <p>Gaya - Patna Highway (NH 83), Ore Chakand, Gaya &bull; Easy parking &amp; banquet venue</p>
+          </div>
+        </div>
       </div>
       <div class="loc-info reveal">
-        <div class="pill"><span class="crown">&#9818;</span> Royal Restaurant</div>
-        <h3>Ore Chakand, Gaya</h3>
-        <div class="loc-item"><span><i class="fas fa-map-pin"></i></span><p>Royal Restaurant, Ore Chakand<br/>Gaya, Bihar – 823001, India</p></div>
-        <div class="loc-item"><span><i class="fas fa-train"></i></span><p>10 min from Gaya Junction Railway Station</p></div>
-        <div class="loc-item"><span><i class="fas fa-parking"></i></span><p>Free parking for 50+ vehicles</p></div>
+        <div class="pill"><span class="crown">&#9818;</span> Highway Fine Dining &amp; Celebrations</div>
+        <h3>Royal Restaurant</h3>
+        <p class="loc-tagline">&ldquo;Taste It. Love It &amp; Remember It&rdquo;</p>
+        <div class="loc-item"><span><i class="fas fa-map-marker-alt"></i></span><p><strong>24°55&prime;21.5&Prime;N 84°59&prime;12.6&Prime;E</strong><br/>Gaya - Patna Main Rd (NH 83), Ore Chakand, Bihar – 823001</p></div>
+        <div class="loc-item"><span><i class="fas fa-road"></i></span><p>Directly on Gaya - Patna Main Highway (NH 83)</p></div>
+        <div class="loc-item"><span><i class="fas fa-parking"></i></span><p>Spacious front parking for 50+ cars and two-wheelers</p></div>
+        <div class="loc-item"><span><i class="fas fa-glass-cheers"></i></span><p>Grand venue for weddings, parties &amp; family celebrations</p></div>
         <div class="hours">
           <div class="hi"><span class="d">Monday</span><span class="t">11am–10:30pm</span></div>
           <div class="hi"><span class="d">Tuesday</span><span class="t">11am–10:30pm</span></div>
@@ -1905,9 +1987,14 @@ footer{background:var(--dbrown);border-top:1px solid var(--gborder);padding:75px
           <div class="hi"><span class="d">Sunday</span><span class="t">10am–11pm</span></div>
           <div class="hi" style="color:var(--gold)"><span class="d" style="color:var(--gold)">Festivals</span><span class="t">Till Midnight</span></div>
         </div>
-        <a href="https://maps.google.com?q=Gaya+Bihar" target="_blank" class="btn-gold" style="margin-top:24px;display:inline-flex">
-          <i class="fas fa-directions"></i> Get Directions
-        </a>
+        <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+          <a href="https://www.google.com/maps?q=24.922639,84.986833" target="_blank" class="btn-gold" id="btnGetDirections" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-size:.85rem;text-decoration:none">
+            <i class="fas fa-external-link-alt"></i> Open Google Maps
+          </a>
+          <button type="button" onclick="focusAndGetDirections()" class="btn-gold" id="btnFocusMap" style="border:1px solid rgba(201,168,76,.5);background:rgba(201,168,76,.1);color:var(--champ);cursor:pointer;display:inline-flex;align-items:center;gap:8px;padding:14px 24px;font-size:.85rem">
+            <i class="fas fa-crosshairs"></i> Locate On Map
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -2831,6 +2918,182 @@ function doContact(e) {
     e.target.reset();
   }, 4000);
 }
+</script>
+
+<!-- Leaflet JS -->
+<script src="vendor/leaflet.js"></script>
+<script>
+// ══════════════════════════ INTERACTIVE MAP ══════════════════════════
+(function() {
+  // Exact GPS Coordinates: 24°55'21.5"N 84°59'12.6"E
+  var RESTAURANT_LAT = 24.922639;
+  var RESTAURANT_LNG = 84.986833;
+  var RESTAURANT_DMS = '24°55\'21.5"N 84°59\'12.6"E';
+  var INITIAL_ZOOM = 16;
+  var FOCUS_ZOOM = 17;
+  var mapEl = document.getElementById('restaurant-map');
+  if (!mapEl || typeof L === 'undefined') return;
+
+  var map = L.map('restaurant-map', {
+    center: [RESTAURANT_LAT, RESTAURANT_LNG],
+    zoom: INITIAL_ZOOM,
+    minZoom: 11,
+    maxZoom: 18,
+    zoomControl: true,
+    scrollWheelZoom: true,
+    attributionControl: true
+  });
+
+  // OpenStreetMap (Complete highway & street network, all zoom levels without missing tiles)
+  var streetLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
+    maxNativeZoom: 18,
+    maxZoom: 18
+  });
+
+  // Esri World Imagery (Aerial photography; maxNativeZoom: 16 auto-scales higher zooms so 'Map data not available' never appears)
+  var satLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '&copy; <a href="https://www.esri.com/" target="_blank">Esri</a> Satellite',
+    maxNativeZoom: 16,
+    maxZoom: 18
+  });
+
+  streetLayer.addTo(map);
+  var currentLayer = 'street';
+
+  window.toggleMapLayer = function() {
+    var btn = document.getElementById('mapLayerToggle');
+    if (currentLayer === 'street') {
+      map.removeLayer(streetLayer);
+      satLayer.addTo(map);
+      currentLayer = 'sat';
+      if (btn) {
+        btn.innerHTML = '<i class="fas fa-map"></i> Street';
+        btn.classList.add('active');
+      }
+    } else {
+      map.removeLayer(satLayer);
+      streetLayer.addTo(map);
+      currentLayer = 'street';
+      if (btn) {
+        btn.innerHTML = '<i class="fas fa-layer-group"></i> Satellite';
+        btn.classList.remove('active');
+      }
+    }
+  };
+
+  // Custom red SVG pin marker
+  var redPinSvg = '<div class="red-pin-container">' +
+    '<div class="red-pin-pulse"></div>' +
+    '<div class="red-pin-body">' +
+      '<svg viewBox="0 0 36 48" xmlns="http://www.w3.org/2000/svg">' +
+        '<defs>' +
+          '<linearGradient id="pinGrad" x1="0%" y1="0%" x2="100%" y2="100%">' +
+            '<stop offset="0%" style="stop-color:#ef4444"/>' +
+            '<stop offset="50%" style="stop-color:#dc2626"/>' +
+            '<stop offset="100%" style="stop-color:#b91c1c"/>' +
+          '</linearGradient>' +
+          '<radialGradient id="pinShine" cx="35%" cy="30%" r="50%">' +
+            '<stop offset="0%" style="stop-color:rgba(255,255,255,0.45)"/>' +
+            '<stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>' +
+          '</radialGradient>' +
+        '</defs>' +
+        '<path d="M18 0C8.06 0 0 8.06 0 18c0 13.5 18 30 18 30s18-16.5 18-30C36 8.06 27.94 0 18 0z" fill="url(#pinGrad)"/>' +
+        '<path d="M18 0C8.06 0 0 8.06 0 18c0 13.5 18 30 18 30s18-16.5 18-30C36 8.06 27.94 0 18 0z" fill="url(#pinShine)"/>' +
+        '<circle cx="18" cy="16" r="7" fill="white" opacity="0.95"/>' +
+        '<text x="18" y="20" text-anchor="middle" font-size="11" font-weight="bold" fill="#dc2626" font-family="Cinzel,serif">♛</text>' +
+      '</svg>' +
+    '</div>' +
+  '</div>';
+
+  var redPinIcon = L.divIcon({
+    html: redPinSvg,
+    className: 'custom-red-pin-marker',
+    iconSize: [40, 48],
+    iconAnchor: [20, 48],
+    popupAnchor: [0, -50]
+  });
+
+  var marker = L.marker([RESTAURANT_LAT, RESTAURANT_LNG], {
+    icon: redPinIcon,
+    title: 'Royal Restaurant - ' + RESTAURANT_DMS
+  }).addTo(map);
+
+  // Luxury popup content with real restaurant exterior photo
+  var popupHtml =
+    '<div class="popup-card">' +
+      '<img src="images/royal-restaurant-front.jpg" class="popup-img" alt="Royal Restaurant Front View" />' +
+      '<div class="popup-body">' +
+        '<div class="popup-head">♛ Royal Restaurant</div>' +
+        '<div class="popup-badge-sub">&ldquo;Taste It. Love It &amp; Remember It&rdquo;</div>' +
+        '<div class="popup-coord"><i class="fas fa-crosshairs"></i> ' + RESTAURANT_DMS + '</div>' +
+        '<div class="popup-addr">Gaya - Patna Main Rd (NH 83), Ore Chakand, Bihar – 823001</div>' +
+        '<a class="popup-cta" href="https://www.google.com/maps?q=24.922639,84.986833" target="_blank">' +
+          '<i class="fas fa-external-link-alt"></i> Open Google Maps' +
+        '</a>' +
+      '</div>' +
+    '</div>';
+
+  marker.bindPopup(popupHtml, {
+    maxWidth: 300,
+    minWidth: 260,
+    closeButton: true,
+    className: ''
+  });
+
+  // Bounce the pin on initial load
+  setTimeout(function() {
+    var pinEl = document.querySelector('.red-pin-container');
+    if (pinEl) {
+      pinEl.classList.add('red-pin-bounce');
+      setTimeout(function() { pinEl.classList.remove('red-pin-bounce'); }, 900);
+    }
+  }, 1200);
+
+  // Open popup after a moment
+  setTimeout(function() {
+    marker.openPopup();
+  }, 2000);
+
+  // Focus and Get Directions function (smooth zoom-in + open popup)
+  window.focusAndGetDirections = function() {
+    // Scroll the location section into view smoothly
+    var locSection = document.getElementById('location');
+    if (locSection) {
+      locSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // After scroll completes, fly to the marker with smooth animation
+    setTimeout(function() {
+      map.flyTo([RESTAURANT_LAT, RESTAURANT_LNG], FOCUS_ZOOM, {
+        duration: 1.8,
+        easeLinearity: 0.25
+      });
+
+      // Bounce marker and open popup after fly animation
+      setTimeout(function() {
+        var pinEl = document.querySelector('.red-pin-container');
+        if (pinEl) {
+          pinEl.classList.add('red-pin-bounce');
+          setTimeout(function() { pinEl.classList.remove('red-pin-bounce'); }, 900);
+        }
+        marker.openPopup();
+      }, 1900);
+    }, 600);
+  };
+
+  // Invalidate map size when it becomes visible (reveal animation)
+  var mapObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        setTimeout(function() { map.invalidateSize(); }, 300);
+        mapObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  mapObs.observe(mapEl);
+
+})();
 </script>
 
 </body>
