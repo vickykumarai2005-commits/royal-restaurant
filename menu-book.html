@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Royal Menu Book – Royal Restaurant</title>
+<title>Highway Menu Book – Highway Restaurant</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet"/>
 <style>
 /* ═══════════ RESET & BASE ═══════════ */
@@ -427,11 +427,11 @@ body{
 <div class="bg-food" id="bgFood"></div>
 
 <!-- Back button -->
-<a href="index.html" class="back-btn">← Back to Royal Restaurant</a>
+<a href="index.html" class="back-btn">← Back to Highway Restaurant</a>
 
 <!-- Page title -->
 <div class="page-title">
-  <h1>♛ ROYAL MENU BOOK</h1>
+  <h1>♛ HIGHWAY MENU BOOK</h1>
   <p>Ore Chakand · Gaya · Bihar</p>
 </div>
 
@@ -449,7 +449,7 @@ body{
     <div class="left-page" id="leftPage" style="display:none">
       <div class="page-lines"></div>
       <div class="rest-logo">
-        <div class="rn">♛ ROYAL RESTAURANT</div>
+        <div class="rn">♛ HIGHWAY RESTAURANT</div>
         <div class="rs">Ore Chakand, Gaya, Bihar</div>
       </div>
 
@@ -461,7 +461,7 @@ body{
         </li>
         <li class="cat-item" data-cat="nonveg" onclick="showCategory('nonveg',this)">
           <span class="cat-icon">🍗</span>
-          <span>Non-Veg Royale</span>
+          <span>Non-Veg Highway Specials</span>
           <span class="cat-count">8</span>
         </li>
         <li class="cat-item" data-cat="chinese" onclick="showCategory('chinese',this)">
@@ -471,12 +471,12 @@ body{
         </li>
         <li class="cat-item" data-cat="dessert" onclick="showCategory('dessert',this)">
           <span class="cat-icon">🍮</span>
-          <span>Royal Desserts</span>
+          <span>Highway Desserts</span>
           <span class="cat-count">6</span>
         </li>
         <li class="cat-item" data-cat="drinks" onclick="showCategory('drinks',this)">
           <span class="cat-icon">🥤</span>
-          <span>Royal Drinks</span>
+          <span>Highway Drinks</span>
           <span class="cat-count">6</span>
         </li>
       </ul>
@@ -501,7 +501,7 @@ body{
       <div class="cover-front">
         <div class="cover-crown">♛</div>
         <div class="cover-divider"></div>
-        <div class="book-title">ROYAL<br/>RESTAURANT</div>
+        <div class="book-title">HIGHWAY<br/>RESTAURANT</div>
         <div class="book-sub">The Grand Menu Collection</div>
         <div class="cover-divider" style="margin-top:12px"></div>
         <div class="ornament">✦ &nbsp; ✦ &nbsp; ✦</div>
@@ -529,32 +529,32 @@ const menuData = {
     items: [
       { emoji:'🍛', name:'Paneer Lababdar', desc:'Creamy tomato gravy with golden paneer, fenugreek finish', price:'₹260', badge:'veg' },
       { emoji:'🧀', name:'Paneer Tikka Maharaja', desc:'Saffron-yoghurt marinated, chargrilled with peppers', price:'₹220', badge:'veg' },
-      { emoji:'🥘', name:'Dal Makhani Royal', desc:'Black lentils slow-cooked overnight with butter & cream', price:'₹180', badge:'veg' },
+      { emoji:'🥘', name:'Dal Makhani Highway Special', desc:'Black lentils slow-cooked overnight with butter & cream', price:'₹180', badge:'veg' },
       { emoji:'🫛', name:'Kadai Paneer', desc:'Cottage cheese with roasted peppers in spiced tomato masala', price:'₹240', badge:'veg' },
       { emoji:'🌽', name:'Malai Kofta', desc:'Soft potato-paneer dumplings in a rich mildly sweet gravy', price:'₹220', badge:'veg' },
-      { emoji:'🍅', name:'Shahi Aloo', desc:'Baby potatoes in saffron-infused royal Mughal gravy', price:'₹180', badge:'chef' },
+      { emoji:'🍅', name:'Shahi Aloo', desc:'Baby potatoes in saffron-infused rich Mughal gravy', price:'₹180', badge:'chef' },
       { emoji:'🫘', name:'Chana Masala', desc:'Robust chickpeas in aromatic Bihari-style spiced gravy', price:'₹160', badge:'veg' },
       { emoji:'🥬', name:'Palak Paneer', desc:'Fresh spinach purée with cottage cheese & kasoori methi', price:'₹200', badge:'veg' },
     ]
   },
   nonveg: {
-    title: '🍗 Non-Veg Royale',
+    title: '🍗 Non-Veg Highway Specials',
     subtitle: 'Masterstrokes of Mughal & Bihari cuisine',
     emoji: '🍗',
     items: [
-      { emoji:'🍗', name:'Royal Butter Chicken', desc:'Succulent chicken in velvety tomato-butter-cream sauce', price:'₹320', badge:'nonveg' },
+      { emoji:'🍗', name:'Highway Butter Chicken', desc:'Succulent chicken in velvety tomato-butter-cream sauce', price:'₹320', badge:'nonveg' },
       { emoji:'🥩', name:'Bihari Mutton Curry', desc:'Slow-cooked mutton in authentic legacy Bihari spices', price:'₹380', badge:'nonveg' },
-      { emoji:'🍢', name:'Royal Seekh Kebab', desc:'Minced lamb with spices grilled over live charcoal', price:'₹280', badge:'chef' },
-      { emoji:'🍖', name:'Chicken Leg Roast', desc:'Slow-roasted legs in Royal masala with mint chutney', price:'₹320', badge:'nonveg' },
+      { emoji:'🍢', name:'Highway Seekh Kebab', desc:'Minced lamb with spices grilled over live charcoal', price:'₹280', badge:'chef' },
+      { emoji:'🍖', name:'Chicken Leg Roast', desc:'Slow-roasted legs in Highway masala with mint chutney', price:'₹320', badge:'nonveg' },
       { emoji:'🥗', name:'Mutton Keema Masala', desc:'Spiced minced mutton cooked with peas & whole spices', price:'₹340', badge:'nonveg' },
       { emoji:'🐟', name:'Fish Fry Amritsari', desc:'Crispy marinated fish fillet with ajwain & chaat masala', price:'₹350', badge:'spicy' },
-      { emoji:'🍳', name:'Egg Bhurji Royal', desc:'Scrambled eggs with onions, tomatoes & green chillies', price:'₹140', badge:'nonveg' },
+      { emoji:'🍳', name:'Egg Bhurji Highway Special', desc:'Scrambled eggs with onions, tomatoes & green chillies', price:'₹140', badge:'nonveg' },
       { emoji:'🍲', name:'Chicken Rogan Josh', desc:'Kashmiri-style slow-cooked chicken in robust red gravy', price:'₹300', badge:'spicy' },
     ]
   },
   chinese: {
     title: '🍜 Chinese Corner',
-    subtitle: 'Indo-Chinese fusion done royally',
+    subtitle: 'Indo-Chinese fusion with authentic flavors',
     emoji: '🍜',
     items: [
       { emoji:'🍜', name:'Veg Hakka Noodles', desc:'Stir-fried noodles with crisp vegetables in soy sauce', price:'₹180', badge:'veg' },
@@ -566,12 +566,12 @@ const menuData = {
     ]
   },
   dessert: {
-    title: '🍮 Royal Desserts',
+    title: '🍮 Highway Desserts',
     subtitle: 'Sweet endings fit for a Maharaja',
     emoji: '🍮',
     items: [
       { emoji:'🍮', name:'Shahi Phirni', desc:'Silky rice pudding with cardamom, saffron & rose petals', price:'₹120', badge:'veg' },
-      { emoji:'🟤', name:'Gulab Jamun Royale', desc:'Soft khoya dumplings in rose-cardamom syrup, pistachio', price:'₹90', badge:'veg' },
+      { emoji:'🟤', name:'Gulab Jamun Highway Special', desc:'Soft khoya dumplings in rose-cardamom syrup, pistachio', price:'₹90', badge:'veg' },
       { emoji:'🍨', name:'Kulfi Malai', desc:'Creamy frozen dessert with saffron, pistachio & cardamom', price:'₹100', badge:'chef' },
       { emoji:'🍯', name:'Gajar Ka Halwa', desc:'Slow-cooked carrot pudding with ghee, milk & dry fruits', price:'₹110', badge:'veg' },
       { emoji:'🥛', name:'Rabri', desc:'Thickened sweetened milk with saffron strands & nuts', price:'₹100', badge:'veg' },
@@ -579,14 +579,14 @@ const menuData = {
     ]
   },
   drinks: {
-    title: '🥤 Royal Drinks',
-    subtitle: 'Refreshing sips for the royal soul',
+    title: '🥤 Highway Drinks',
+    subtitle: 'Refreshing sips for the soul',
     emoji: '🥤',
     items: [
-      { emoji:'🥭', name:'Royal Mango Lassi', desc:'Alphonso mango pulp with yoghurt, cardamom & saffron', price:'₹90', badge:'veg' },
+      { emoji:'🥭', name:'Highway Mango Lassi', desc:'Alphonso mango pulp with yoghurt, cardamom & saffron', price:'₹90', badge:'veg' },
       { emoji:'☕', name:'Kahwa Gold', desc:'Kashmiri saffron tea with almonds, cinnamon & cardamom', price:'₹70', badge:'chef' },
       { emoji:'🌹', name:'Rose Sharbat', desc:'Chilled rose-flavoured drink with basil seeds & milk', price:'₹60', badge:'veg' },
-      { emoji:'🍋', name:'Nimbu Pani Royal', desc:'Fresh lime with black salt, cumin & mint leaves', price:'₹50', badge:'veg' },
+      { emoji:'🍋', name:'Nimbu Pani Highway', desc:'Fresh lime with black salt, cumin & mint leaves', price:'₹50', badge:'veg' },
       { emoji:'🥛', name:'Badam Milk', desc:'Warm almond milk with saffron, cardamom & sugar', price:'₹80', badge:'veg' },
       { emoji:'🍵', name:'Masala Chai', desc:'Spiced tea with ginger, cardamom, clove & star anise', price:'₹40', badge:'veg' },
     ]
